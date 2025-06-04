@@ -17,4 +17,14 @@ rc-service dbus start
 
 apk add font-noto ttf-dejavu
 
+apk xorg-server
+
+apk add xf86-video-vesa
+
+# Driver input
+apk add xf86-input-evdev
+
+# Utilità X11
+apk add xinit xrandr
+
 
