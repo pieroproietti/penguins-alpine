@@ -15,15 +15,16 @@ git clone https://gitlab.alpinelinux.org/alpine/mkinitfs
 ```
 
 ## Applica il sidecar.sh
-Edita il file `/mkinitfs/mkinitfs.in`
+Edita il file `/mkinitfs/mkinitfs.in` ed:
 
-### Aggiungi a `myopt, le variabili`:
-- `alpinelivesquashfs`
-- `alpinelivelabel`
-- `cow_spacesize`
+- cerca la dichiarazione di `myopt` ed aggiungi le variabili`:
+```
+alpinelivesquashfs
+alpinelivelabel
+cow_spacesize
+```
 
-### Aggiungi il sidecar.sh
-Copia ed incolla `sidecar.in` seguendo le istruzioni nel codice stesso:
+- Copia ed incolla il file `sidecar.in` in `/mkinitfs/mkinitfs.in`. seguendo le istruzioni nel codice stesso:
 
 insert just after: `$MOCK mount -t tmpfs -o $rootflags tmpfs $sysroot`
 
