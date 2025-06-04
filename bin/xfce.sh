@@ -8,8 +8,9 @@ apk add xfce4 xfce4-terminal xfce4-screensaver
 apk add xfce4-panel xfce4-session xfce4-settings xfce4-taskmanager
 apk add xfce4-power-manager xfce4-notifyd thunar-volman
 
+
 apk add lightdm lightdm-gtk-greeter
-rc-update add lightdm default
+#rc-update add lightdm default
 
 apk add dbus
 rc-update add dbus default
@@ -27,12 +28,22 @@ apk add xf86-video-vesa
 apk add xf86-input-evdev
 apk add xf86-input-libinput
 # Driver per il mouse
-apk add xf86-input-mouse
+# apk add xf86-input-mouse
+
 # Driver per la tastiera
 apk add xf86-input-keyboard
 
 
 # Utilità X11
 apk add xinit xrandr
+
+# spice-vdagent per la condivisione degli appunti e il ridimensionamento della finestra
+apk add spice-vdagent
+rc-update add spice-vdagent default
+
+# Abilita il servizio di gestione della sessione
+rc-update add xfce4-session default
+
+
 
 
