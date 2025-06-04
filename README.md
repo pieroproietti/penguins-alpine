@@ -25,7 +25,7 @@ Edita il file `/mkinitfs/mkinitfs.in`
 ### Aggiungi il sidecar.sh
 Copia ed incolla `sidecar.in` seguendo le istruzioni nel codice stesso:
 
-# insert just after: `$MOCK mount -t tmpfs -o $rootflags tmpfs $sysroot`
+insert just after: `$MOCK mount -t tmpfs -o $rootflags tmpfs $sysroot`
 
 ## Come funziona
 
