@@ -11,3 +11,5 @@ if [ -f /etc/xdg/autostart/spice-vdagent.desktop ]; then
 else
     echo "File /etc/xdg/autostart/spice-vdagent.desktop non trovato."
 fi  
+
+

@@ -1,5 +1,6 @@
 # INSTALLAZIONE
 
+```
 setup-alpine
 
 reboot
@@ -7,3 +8,4 @@ reboot
 doas add bash-completion
 
 doas setup-desktop
+```
