@@ -1,6 +1,4 @@
-#!/bin/bash
-# Description: Clone the mkinitfs repository from Alpine Linux GitLab and prepare the sidecar.in file.
-# Usage: ./clone-mkinitfs.sh
+#!/bin/sh
 set -e
 
 git clone https://gitlab.alpinelinux.org/alpine/mkinitfs 
