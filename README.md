@@ -1,4 +1,4 @@
-# Penguins' eggs: sidecar per Alpine Linux
+# Penguins' eggs sidecar per Alpine Linux
 
 Repository per gestire facilmente il sidecar di penguins' eggs con Alpine Linux.
 
