@@ -25,6 +25,12 @@ apk add xf86-video-vesa
 
 # Driver input
 apk add xf86-input-evdev
+apk add xf86-input-libinput
+# Driver per il mouse
+apk add xf86-input-mouse
+# Driver per la tastiera
+apk add xf86-input-keyboard
+
 
 # Utilità X11
 apk add xinit xrandr
