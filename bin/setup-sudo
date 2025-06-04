@@ -4,6 +4,5 @@ doas tee /usr/local/bin/sudo << 'EOF' > /dev/null
 exec doas "$@"
 EOF
 
-
 # Rendi eseguibile lo script
 doas chmod +x /usr/local/bin/sudo

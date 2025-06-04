@@ -11,6 +11,8 @@ doas tee /usr/local/bin/code << 'EOF' > /dev/null
 #!/bin/sh
 exec flatpak run com.visualstudio.code "$@"
 EOF
+
+
 # Rendi eseguibile lo script
 doas chmod +x /usr/local/bin/code
 
