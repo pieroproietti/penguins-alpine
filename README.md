@@ -2,19 +2,33 @@
 
 Repository per gestire facilmente il sidecar di penguins' eggs con Alpine Linux.
 
-## 📁 Struttura della Repository
+## Struttura
 
 ```
 penguins-sidecar/
 ├── README.md
 └── sidecar.in 
 ```
-
-## Clona la repository
+## Clona l'originale
 ```bash
-
-cd mkinitfs
+git clone https://gitlab.alpinelinux.org/alpine/mkinitfs 
 ```
+
+## Applica il sidecar.sh
+Edita il file `/mkinitfs/mkinitfs.in`
+
+### Aggiungi a `myopt, le variabili`:
+- `alpinelivesquashfs`
+- `alpinelivelabel`
+- `cow_spacesize`
+
+### Aggiungi il sidecar.sh
+Copia ed incolla `sidecar.in` seguendo le istruzioni nel codice stesso:
+
+# insert just after: `$MOCK mount -t tmpfs -o $rootflags tmpfs $sysroot`
+
+## Come funziona
+
 
 ## Applica il sidecar
 
