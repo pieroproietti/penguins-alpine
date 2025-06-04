@@ -17,8 +17,10 @@ rc-service dbus start
 
 apk add font-noto ttf-dejavu
 
-apk xorg-server
+apk add xorg-server
 
+# Driver video
+apk add xf86-video-fbdev
 apk add xf86-video-vesa
 
 # Driver input
