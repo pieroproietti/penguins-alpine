@@ -1,0 +1,9 @@
+# Crea uno script di avvio per VS Code
+doas tee /usr/local/bin/sudo << 'EOF' > /dev/null
+#!/bin/sh
+exec doas "$@"
+EOF
+
+
+# Rendi eseguibile lo script
+doas chmod +x /usr/local/bin/sudo
