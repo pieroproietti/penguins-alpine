@@ -1,4 +1,4 @@
-# Penguins' Eggs Sidecar per Alpine Linux
+# Penguins' eggs: sidecar per Alpine Linux
 
 Repository per gestire facilmente il sidecar di penguins' eggs con Alpine Linux.
 
@@ -41,7 +41,6 @@ Copia l'init modificato nella tua initramfs e usa questi parametri di boot:
 ```
 alpinelivelabel=colibri alpinelivesquashfs=/mnt/live/filesystem.squashfs
 ```
-
 ### Parametri Boot Supportati
 
 - `alpinelivelabel=LABEL` - Label del dispositivo live (es: colibri)
