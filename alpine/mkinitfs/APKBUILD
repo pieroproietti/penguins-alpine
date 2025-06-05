@@ -1,0 +1,51 @@
+# Maintainer: Piero Proietti <pieroproietti@gmail.com>
+# modificare solo url, source e sha512sums=""
+# ed aggiungere in build() e package()
+#cd ~/penguins-sidecar/mkinitfs
+
+pkgname=mkinitfs
+pkgver=3.12.0
+# shellcheck disable=SC2034 # used for git versions, keep around for next time
+_ver=${pkgver%*git*}
+
+pkgrel=0
+pkgdesc="Tool to generate initramfs images for Alpine"
+#url="https://gitlab.alpinelinux.org/alpine/mkinitfs"
+url="file:///home/artisan/penguins-sidecar/mkinitfs/"
+arch="all"
+license="GPL-2.0-only"
+makedepends_host="busybox kmod-dev util-linux-dev cryptsetup-dev linux-headers"
+makedepends="$makedepends_host"
+checkdepends="kyua"
+depends="
+	apk-tools>=2.9.1
+	busybox-binsh
+	busybox>=1.28.2-r1
+	kmod
+	lddtree>=1.25
+	mdev-conf
+	"
+subpackages="$pkgname-doc"
+install="$pkgname.pre-upgrade $pkgname.post-install $pkgname.post-upgrade"
+triggers="$pkgname.trigger=/lib/modules/*:/usr/lib/modules/*"
+#source="https://gitlab.alpinelinux.org/alpine/mkinitfs/-/archive/$pkgver/mkinitfs-$pkgver.tar.gz"
+source="file:///home/artisan/penguins-sidecar/mkinitfs"
+
+provides="initramfs-generator"
+provider_priority=900 # highest
+
+build() {
+	cd ~/penguins-sidecar/mkinitfs 
+	make VERSION=$pkgver-r$pkgrel
+}
+
+check() {
+	make check
+}
+
+package() {
+	cd ~/penguins-sidecar/mkinitfs
+	make install DESTDIR="$pkgdir"
+}
+
+sha512sums=""
