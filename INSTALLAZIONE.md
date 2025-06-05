@@ -8,6 +8,6 @@ reboot
 ```
 doas add bash-completion
 doas setup-desktop
-doas apk add xrandr
+doas apk add xrandr setxkbmap
 
 ```
