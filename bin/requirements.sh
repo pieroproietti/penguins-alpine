@@ -1,0 +1,4 @@
+doas apk add alpine-conf apk-tools bash-completion cryptsetup curl dosfstools git fuse lsblk lvm2 jq mkinitfs nodejs  parted rsync squashfs-tools sshfs xorriso
+doas apk add musl
+doas apk add pnpm
+# doas apk add --allow-untrusted p*
