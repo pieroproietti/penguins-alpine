@@ -25,7 +25,7 @@ git clone https://gitlab.alpinelinux.org/alpine/mkinitfs
 ```
 - apri il  file: `sidecar-mkinitfs/initramfs-init.in` 
 
-- cerca la dichiarazione di `myopt` ed aggiungi le variabili`:
+- cerca la dichiarazione di `myopts` ed aggiungi le variabili`:
 ```
 alpinelivesquashfs
 alpinelivelabel

@@ -4,7 +4,7 @@
 #
 # edit mkinitfs/initramfs-init.in
 #
-# add to myopt:
+# add to myopts:
 #	alpinelivesquashfs
 #	alpinelivelabel 
 #	cow_spacesize
