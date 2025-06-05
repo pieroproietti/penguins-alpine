@@ -23,7 +23,7 @@ Il sidecar:
 ```bash
 git clone https://gitlab.alpinelinux.org/alpine/mkinitfs 
 ```
-- apri i file: `/mkinitfs/mkinitfs.in` 
+- apri i file: `mkinitfs/initramfs-init.in` 
 
 - cerca la dichiarazione di `myopt` ed aggiungi le variabili`:
 ```
