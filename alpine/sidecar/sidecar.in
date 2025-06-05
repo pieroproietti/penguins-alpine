@@ -1,11 +1,17 @@
 # sidecar start #####################################################################
 # 
-# We need to add in myopt:
+# git clone https://gitlab.alpinelinux.org/alpine/mkinitfs 
+#
+# edit mkinitfs/initramfs-init.in
+#
+# add to myopt:
 #	alpinelivesquashfs
 #	alpinelivelabel 
 #	cow_spacesize
 #
-# insert just after: `$MOCK mount -t tmpfs -o $rootflags tmpfs $sysroot`
+# fing line: `$MOCK mount -t tmpfs -o $rootflags tmpfs $sysroot`
+#
+# and insert sidecar.in there
 # 
 ####################################################################################
 if [ -n "${KOPT_alpinelivelabel}" ]; then

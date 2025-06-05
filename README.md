@@ -21,7 +21,7 @@ Il sidecar:
 ## Monta il sidecar alla moto
 
 ```bash
-git clone https://gitlab.alpinelinux.org/alpine/mkinitfs sidecar-mkinitfs
+git clone https://gitlab.alpinelinux.org/alpine/mkinitfs 
 ```
 - apri il  file: `sidecar-mkinitfs/initramfs-init.in` 
 

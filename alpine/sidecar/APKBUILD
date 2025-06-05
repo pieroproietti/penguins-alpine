@@ -1,8 +1,14 @@
 # Maintainer: Piero Proietti <pieroproietti@gmail.com>
 # 
-# va usato DOPO aver completato la modifica in 
-# modifica le righe: url, source e sha512sums=""
-# ed aggiungere in build() e package()
+# usare DOPO aver completato la modifica dell'originale
+#
+# modifica la riga: 
+# - url
+# e commenta:
+# source
+# sha512sums=""
+# aggiungere in build() e package()
+#
 # cd ~/penguins-sidecar/mkinitfs
 
 pkgname=mkinitfs
@@ -31,7 +37,6 @@ subpackages="$pkgname-doc"
 install="$pkgname.pre-upgrade $pkgname.post-install $pkgname.post-upgrade"
 triggers="$pkgname.trigger=/lib/modules/*:/usr/lib/modules/*"
 #source="https://gitlab.alpinelinux.org/alpine/mkinitfs/-/archive/$pkgver/mkinitfs-$pkgver.tar.gz"
-source="file:///home/artisan/penguins-sidecar/mkinitfs"
 
 provides="initramfs-generator"
 provider_priority=900 # highest
@@ -50,4 +55,5 @@ package() {
 	make install DESTDIR="$pkgdir"
 }
 
-sha512sums=""
+# Omessa per non aver i checkum
+# sha512sums=""
