@@ -9,6 +9,10 @@ penguins-sidecar/
 ├── README.md
 └── sidecar.in 
 ```
+## PRELIMINARI
+* [Installazione Alpine con strumenti di sviluppo](./INSTALLAZIONE.md)
+* [Installazione APKBUILD](./APKBUILD.md)
+
 ## Come Funziona il sidecar
 
 Il sidecar:
