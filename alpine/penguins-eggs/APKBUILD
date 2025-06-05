@@ -5,7 +5,6 @@
 pkgname=penguins-eggs
 pkgver=10.1.1
 pkgrel=6
-# Specifica il commit completo qui
 _commit=8bcb3f9f4d1571e675fe9351240459c7099ec406
 pkgdesc="A console tool that allows you to remaster your system and redistribute it as live images on USB sticks or via PXE"
 url="https://penguins-eggs.net"
@@ -32,15 +31,11 @@ depends="
  xorriso"
 makedepends="pnpm"
 subpackages="$pkgname-bash-completion $pkgname-doc"
-# Usa il commit specifico
-builddir="$srcdir"/penguins-eggs-8bcb3f9f4d1571e675fe9351240459c7099ec406
-source="https://github.com/pieroproietti/penguins-eggs/archive/8bcb3f9f4d1571e675fe9351240459c7099ec406/penguins-eggs-8bcb3f9f4d1571e675fe9351240459c7099ec406.tar.gz"
-options="!check net !checksum" # No tests, no checksum verification
 
-# Alternativa con branch specifico:
-# pkgver=20241205.devel
-# builddir="$srcdir"/penguins-eggs-devel
-# source="https://github.com/pieroproietti/penguins-eggs/archive/refs/heads/devel.tar.gz"
+# Usa il commit specifico
+builddir="$srcdir"/penguins-eggs-$_commit
+source="https://github.com/pieroproietti/penguins-eggs/archive/$_commit/penguins-eggs-$_commit.tar.gz"
+options="!check net !checksum" # No tests, no checksum verification
 
 build() {
  pnpm install
@@ -89,3 +84,7 @@ package() {
  install -d "$pkgdir/"usr/bin
  ln -s /usr/lib/"$pkgname"/bin/run.js "$pkgdir"/usr/bin/eggs
 }
+
+sha512sums="
+b43064c68ce6129e8de060b6b166fbf718f734ffc1b78b8933468377561422af1cf238a51b46fbfefd88de32f93886cef9441c88d0567fd4e1177fe51f20432c  penguins-eggs-8bcb3f9f4d1571e675fe9351240459c7099ec406.tar.gz
+"
