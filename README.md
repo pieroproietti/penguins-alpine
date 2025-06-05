@@ -21,9 +21,9 @@ Il sidecar:
 ## Monta il sidecar alla moto
 
 ```bash
-git clone https://gitlab.alpinelinux.org/alpine/mkinitfs 
+git clone https://gitlab.alpinelinux.org/alpine/mkinitfs sidecar-mkinitfs
 ```
-- apri i file: `mkinitfs/initramfs-init.in` 
+- apri il  file: `sidecar-mkinitfs/initramfs-init.in` 
 
 - cerca la dichiarazione di `myopt` ed aggiungi le variabili`:
 ```
@@ -31,7 +31,7 @@ alpinelivesquashfs
 alpinelivelabel
 cow_spacesize
 ```
-- Copia ed incolla il file `sidecar.in` in `/mkinitfs/mkinitfs.in`, seguendo le istruzioni nel codice stesso:
+- Copia ed incolla il file `sidecar.in` in `/sidecar-mkinitfs/mkinitfs.in`, seguendo le istruzioni nel codice stesso:
 
 insert just after: `$MOCK mount -t tmpfs -o $rootflags tmpfs $sysroot`
 

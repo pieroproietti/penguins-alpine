@@ -1,7 +1,9 @@
 # Maintainer: Piero Proietti <pieroproietti@gmail.com>
-# modificare solo url, source e sha512sums=""
+# 
+# va usato DOPO aver completato la modifica in 
+# modifica le righe: url, source e sha512sums=""
 # ed aggiungere in build() e package()
-#cd ~/penguins-sidecar/mkinitfs
+# cd ~/penguins-sidecar/mkinitfs
 
 pkgname=mkinitfs
 pkgver=3.12.0

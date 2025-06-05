@@ -1,5 +1,5 @@
+# sidecar-mkinitfs
 
-# Installare librerie di sviluppo
 ```
 doas apk add util-linux-dev kmod-dev cryptsetup-dev linux-headers
 ```
