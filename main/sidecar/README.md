@@ -9,17 +9,12 @@ doas apk add util-linux-dev kmod-dev cryptsetup-dev linux-headers
 ## Attacca il sidecar alla moto
 
 ```bash
-cd 
+cd ~/penguins-sidecar
 git clone https://gitlab.alpinelinux.org/alpine/mkinitfs 
 ```
-- apri il  file: `sidecar-mkinitfs/initramfs-init.in` 
-
-- cerca la dichiarazione di `myopts` ed aggiungi le variabili`:
+- apri il  file: 
 ```
-alpinelivesquashfs
-alpinelivelabel
-cow_spacesize
+cp /usr/share/mkinitfs/initramfs-init /tmp/changeme.sh
+code main/sidecar/sidecar.in /tmp/initramfs-init
 ```
-- Copia ed incolla il file `sidecar.in` in `/sidecar-mkinitfs/mkinitfs.in`, seguendo le istruzioni nel codice stesso:
-
-insert just after: `$MOCK mount -t tmpfs -o $rootflags tmpfs $sysroot`
+` e segui le istruzioni
