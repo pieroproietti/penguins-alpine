@@ -11,7 +11,7 @@ doas chmod +x /usr/local/bin/sudo
 # Crea un alias per shutdown
 doas tee /usr/local/bin/shutdown << 'EOF' > /dev/null
 #!/bin/sh
-echo "Use: doas halt"
+echo "Use: doas poweroff"
 EOF
 
 # Rendi eseguibile lo script
