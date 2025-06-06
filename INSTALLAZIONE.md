@@ -11,7 +11,7 @@ doas setup-desktop
 doas apk add git nano
 ```
 
-# clone
+# clona il sidecar
 ```
 git clone https://github.com/pieroproietti/penguins-sidecar
 cd penguins-sidecar
