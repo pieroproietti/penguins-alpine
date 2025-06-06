@@ -1,0 +1,4 @@
+#!/bin/sh
+doas apk add alpine-sdk
+doas adduser artisan abuild
+abuild-keygen -ian
