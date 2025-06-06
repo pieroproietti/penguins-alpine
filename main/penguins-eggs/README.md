@@ -1,7 +1,6 @@
 # APKBUILD penguins-eggs
 
-abuild -r
+abuild checksum
+abuild
 
-doas ln -s /boot/vmlinuz-lts /boot/vmlinuz-6.12.31-0-lts
-doas ln -s /boot/initramfs-lts /boot/initramfs-6.12.31-0-lts
-
+doas apk add zstd zstd-dev

@@ -6,7 +6,7 @@
 pkgname=penguins-eggs
 pkgver=10.1.1
 pkgrel=6
-_commit=8bcb3f9f4d1571e675fe9351240459c7099ec406
+_commit=3ac337876eac18e147cbccce0de2fdd4f0cbcfa6
 pkgdesc="A console tool that allows you to remaster your system and redistribute it as live images on USB sticks or via PXE"
 url="https://penguins-eggs.net"
 arch="x86_64"
@@ -30,6 +30,8 @@ depends="
  squashfs-tools
  sshfs
  xorriso
+ zstd
+ zstd-dev
  libc6-compat"
 
 makedepends="pnpm musl"
@@ -38,7 +40,7 @@ subpackages="$pkgname-bash-completion $pkgname-doc"
 # Usa il commit specifico
 builddir="$srcdir"/penguins-eggs-$_commit
 source="https://github.com/pieroproietti/penguins-eggs/archive/$_commit/penguins-eggs-$_commit.tar.gz"
-options="!check net !checksum" # No tests, no checksum verification
+#options="!check net !checksum" # No tests, no checksum verification
 
 build() {
  pnpm install
@@ -102,5 +104,5 @@ package() {
 }
 
 sha512sums="
-b43064c68ce6129e8de060b6b166fbf718f734ffc1b78b8933468377561422af1cf238a51b46fbfefd88de32f93886cef9441c88d0567fd4e1177fe51f20432c  penguins-eggs-8bcb3f9f4d1571e675fe9351240459c7099ec406.tar.gz
+09b575d5ba38e65041661f376815ecce1a17261649508fa56f1fa47af8b272ed11d443bbfecdf8fc9bdab6c858253d447944dda8fa125443f64adea77adba038  penguins-eggs-3ac337876eac18e147cbccce0de2fdd4f0cbcfa6.tar.gz
 "
