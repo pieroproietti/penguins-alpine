@@ -23,7 +23,7 @@ e segui le istruzioni.
 
 Alla fine:
 ```
-doas mv main/sidecar/changeme.sh /usr/share/mkinitfs/initramfs-init
+doas cp main/sidecar/changeme.sh /usr/share/mkinitfs/initramfs-init
 ```
 
 
