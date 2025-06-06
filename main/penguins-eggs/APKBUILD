@@ -2,6 +2,7 @@
 #
 # Contributor: Piero Proietti <piero.proietti@gmail.com>
 # Mantainer  : Piero Proietti <piero.proietti@gmail.com>
+# 
 pkgname=penguins-eggs
 pkgver=10.1.1
 pkgrel=6
@@ -28,9 +29,10 @@ depends="
  rsync
  squashfs-tools
  sshfs
- xorriso"
+ xorriso
+ libc6-compat"
 
-makedepends="pnpm"
+makedepends="pnpm musl"
 subpackages="$pkgname-bash-completion $pkgname-doc"
 
 # Usa il commit specifico
@@ -44,6 +46,7 @@ build() {
 }
 
 package() {
+
  install -Dm644 .oclif.manifest.json package.json \
   -t "$pkgdir/usr/lib/$pkgname/"
 
