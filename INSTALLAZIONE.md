@@ -6,6 +6,14 @@ setup-alpine
 reboot, riavvia e resto...
 
 ```
+# Tastiera italian in X
+tee ~/.bashrc << 'EOF' > /dev/null
+setxkbmap it
+EOF
+
+# Rendi eseguibile lo script
+doas chmod +x /usr/local/bin/sudo
+
 doas add bash-completion
 doas setup-desktop
 doas apk add git nano
