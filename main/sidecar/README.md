@@ -9,6 +9,7 @@ doas apk add util-linux-dev kmod-dev cryptsetup-dev linux-headers
 ## Attacca il sidecar alla moto
 
 ```bash
+cd 
 git clone https://gitlab.alpinelinux.org/alpine/mkinitfs 
 ```
 - apri il  file: `sidecar-mkinitfs/initramfs-init.in` 
