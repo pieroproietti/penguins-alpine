@@ -3,21 +3,12 @@
 ```
 setup-alpine
 ```
-reboot, riavvia e resto...
+reboot, riavvia e prosegui...
 
 ```
-# Tastiera italian in X
-tee ~/.bashrc << 'EOF' > /dev/null
-setxkbmap it
-EOF
-
-# Rendi eseguibile lo script
-doas chmod +x /usr/local/bin/sudo
-
-doas add bash-completion
+# Desktop
 doas setup-desktop
 doas apk add git nano
-doas chsh -s /bin/bash artisan
 ```
 
 # clone
@@ -28,8 +19,15 @@ doas cp bin/g4* /usr/local/bin/ # This is my configuration
 doas bin/setup-code
 doas bin/setup-requirements
 doas bin/setup-spice-vdagent
+# bash completion
+doas add bash-completion
+doas chsh -s /bin/bash artisan
 
 # run as normal user
+# Tastiera italian in X
+tee ~/.bashrc << 'EOF' > /dev/null
+setxkbmap it
+EOF
 g4artisan
 bin/setup-apkbuild
 
