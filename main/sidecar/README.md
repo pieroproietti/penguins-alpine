@@ -14,6 +14,7 @@ doas apk add util-linux-dev kmod-dev cryptsetup-dev linux-headers
 ```
 - apri i  file: 
 ```
+cd ~/penguins-sidecar
 cp /usr/share/mkinitfs/initramfs-init main/sidecar/changeme.sh
 code main/sidecar/sidecar.in main/sidecar/changeme.sh
 ```

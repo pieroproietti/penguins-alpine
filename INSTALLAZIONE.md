@@ -26,6 +26,8 @@ doas bin/setup-spice-vdagent
 doas apk add bash-completion
 doas chsh -s /bin/bash artisan
 doas apk add setxkbmap
+doas apk add libc6-compat
+
 
 # run as normal user
 # Tastiera italian in X
@@ -34,5 +36,6 @@ setxkbmap it
 EOF
 g4artisan
 bin/setup-apkbuild
+
 
 ```
