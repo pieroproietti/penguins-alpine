@@ -25,7 +25,7 @@ doas bin/setup-spice-vdagent
 # bash e bash-completion
 doas apk add bash-completion
 doas chsh -s /bin/bash artisan
-doas apk add setxkbmap
+doas apk add setxkbmap xdg-user-dirs
 doas apk add libc6-compat
 
 
