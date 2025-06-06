@@ -22,7 +22,7 @@ Il sidecar:
 4. Crea un overlay con tmpfs per le modifiche
 5. Configura il sistema per il boot live
 
-## Monta il sidecar alla moto
+## Attacca il sidecar alla moto
 
 ```bash
 git clone https://gitlab.alpinelinux.org/alpine/mkinitfs 
