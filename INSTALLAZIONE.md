@@ -19,7 +19,7 @@ doas cp bin/g4* /usr/local/bin/ # This is my configuration
 doas bin/setup-code
 doas bin/setup-requirements
 doas bin/setup-spice-vdagent
-# bash completion
+# bash e bash-completion
 doas add bash-completion
 doas chsh -s /bin/bash artisan
 
