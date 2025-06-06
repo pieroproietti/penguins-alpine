@@ -17,8 +17,10 @@ doas apk add git nano
 git clone https://github.com/pieroproietti/penguins-sidecar
 cd penguins-sidecar
 doas cp bin/g4* /usr/local/bin/ # This is my configuration
-doas bin/setup-apkbuild
 doas bin/setup-code
 doas bin/setup-requirements
 doas bin/setup-spice-vdagent
+# run as normal user
+g4artisan
+bin/setup-apkbuild
 ```
