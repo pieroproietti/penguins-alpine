@@ -1,0 +1,124 @@
+# ======================= SIDECAR SQUASHFS LIVE BOOT =======================
+# Se viene rilevato il nostro parametro per l'avvio live, configuriamo
+# il sistema con overlayfs e saltiamo direttamente a switch_root.
+if [ -n "${KOPT_alpinelivelabel}" ]; then
+
+	# DEBUG VISIVO IMMEDIATO: Se vedi questo messaggio, il blocco è attivo.
+	echo ">>> PENGUINS' EGGS SIDECAR ATTIVATO <<<"
+
+	ebegin "Penguins' eggs: setting up SquashFS live environment"
+
+	# 1. Triggeriamo mdev.
+	echo "SIDECAR DEBUG: Eseguo mdev -s..." > /dev/kmsg
+	mdev -s
+	
+	# 2. FONDAMENTALE: Aggiungiamo un ritardo di 2 secondi per dare a mdev il tempo 
+	#    di creare i device node in /dev.
+	echo "SIDECAR DEBUG: Attendo 2 secondi per la sincronizzazione di mdev..." > /dev/kmsg
+	sleep 2
+	
+	# 3. Creiamo manualmente la struttura di directory e i symlink
+	ebegin "Manually creating device symlinks"
+	mkdir -p /dev/disk/by-label /dev/disk/by-uuid
+	
+	# Itera su tutti i dischi a blocchi
+	for D in /sys/block/*; do
+		# DEBUG: Mostra quale disco stiamo ispezionando
+		echo "SIDECAR DEBUG: Ispeziono disco $(basename $D)..." > /dev/kmsg
+		
+		# Itera su tutte le possibili partizioni del disco.
+		# Una directory è una partizione se contiene un file "partition"
+		for P in $D/*; do
+			if [ -f "$P/partition" ]; then
+				DEVNAME=$(basename $P)
+				
+				# DEBUG: Mostra la partizione trovata e se esiste in /dev
+				echo "SIDECAR DEBUG: Trovata partizione $DEVNAME." > /dev/kmsg
+				if [ -b "/dev/$DEVNAME" ]; then
+					echo "SIDECAR DEBUG: /dev/$DEVNAME esiste. Eseguo blkid." > /dev/kmsg
+					# Usiamo eval per estrarre le info da blkid
+					eval $(blkid -o export /dev/$DEVNAME)
+					
+					if [ -n "$LABEL" ]; then
+						echo "SIDECAR DEBUG: Trovato LABEL=$LABEL. Creo il link." > /dev/kmsg
+						ln -s /dev/$DEVNAME /dev/disk/by-label/"$LABEL"
+					fi
+					if [ -n "$UUID" ]; then
+						# Non creiamo link per UUID per evitare conflitti se non necessario
+						: # echo "SIDECAR DEBUG: Trovato UUID=$UUID." > /dev/kmsg
+					fi
+					
+					if [ -z "$LABEL" ] && [ -z "$UUID" ]; then
+						echo "SIDECAR DEBUG: blkid non ha restituito né LABEL né UUID per $DEVNAME." > /dev/kmsg
+					fi
+
+					unset DEVNAME LABEL UUID
+				else
+					echo "SIDECAR DEBUG: ERRORE! /dev/$DEVNAME non esiste!" > /dev/kmsg
+				fi
+			fi
+		done
+	done
+	eend 0
+
+	# --- INIZIO: Logica di attesa per il dispositivo ---
+	WAIT_TIMEOUT=5 
+	SECONDS_WAITED=0
+	devicelive=""
+
+	while [ -z "$devicelive" ] && [ $SECONDS_WAITED -lt $WAIT_TIMEOUT ]; do
+		devicelive=$(findfs "LABEL=${KOPT_alpinelivelabel}")
+		if [ -z "$devicelive" ]; then
+			sleep 1
+			SECONDS_WAITED=$((SECONDS_WAITED + 1))
+		fi
+	done
+	
+	# --- FINE: Logica di attesa ---
+
+	if [ -z "$devicelive" ]; then
+		eend 1 "Device with LABEL=${KOPT_alpinelivelabel} not found"
+	else
+		fstype=$(blkid -l -t LABEL="${KOPT_alpinelivelabel}" -o value -s TYPE)
+
+		mkdir /mnt
+		mkdir -p /media/root-ro
+		mkdir -p /media/root-rw
+		mkdir -p /media/root-rw/work
+		mkdir -p /media/root-rw/root
+
+		mount -t $fstype ${devicelive} /mnt && \
+		mount -t squashfs /mnt${KOPT_alpinelivesquashfs} /media/root-ro && \
+		mount -t tmpfs root-tmpfs /media/root-rw && \
+		mount -t overlay overlay -o lowerdir=/media/root-ro,upperdir=/media/root-rw/root,workdir=/media/root-rw/work $sysroot
+		
+		if ! mountpoint -q "$sysroot"; then
+			eend 1 "Failed to mount overlayfs to $sysroot"
+		else
+			eend 0
+			[ ! -d "$sysroot/etc" ] && mkdir -p "$sysroot/etc"
+			echo 21733847458759515a19bd2466cdd5de > $sysroot/etc/machine-id
+
+			ebegin "Finalizing live environment"
+			setup_inittab_console
+			! [ -f "$sysroot"/etc/resolv.conf ] && [ -f /etc/resolv.conf ] && \
+				cp /etc/resolv.conf "$sysroot"/etc
+			eend 0
+
+			cat "$ROOT"/proc/mounts 2>/dev/null | while read DEV DIR TYPE OPTS ; do
+				if [ "$DIR" != "/" -a "$DIR" != "$sysroot" -a -d "$DIR" ]; then
+					mkdir -p $sysroot/$DIR
+					$MOCK mount -o move $DIR $sysroot/$DIR
+				fi
+			done
+			sync
+			
+			echo "Switching to live root..."
+			exec switch_root $switch_root_opts $sysroot "$KOPT_init" $KOPT_init_args
+
+			echo "Failed to switch_root from live environment. Emergency shell launched."
+			exec /bin/busybox sh
+		fi
+	fi
+fi
+# ===================== FINE SIDECAR SQUASHFS LIVE BOOT =====================
