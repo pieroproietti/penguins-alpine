@@ -1,3 +1,3 @@
 # APKBUILD penguins-eggs
 
-abuild 
+abuild -r

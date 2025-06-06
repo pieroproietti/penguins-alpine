@@ -1,8 +1,20 @@
-# Crea uno script di avvio per VS Code
+# Crea un alias per sudo
 doas tee /usr/local/bin/sudo << 'EOF' > /dev/null
 #!/bin/sh
-exec doas "$@"
+echo "Use: doas $@"
 EOF
 
 # Rendi eseguibile lo script
 doas chmod +x /usr/local/bin/sudo
+
+
+# Crea un alias per shutdown
+doas tee /usr/local/bin/shutdown << 'EOF' > /dev/null
+#!/bin/sh
+echo "Use: doas halt"
+EOF
+
+# Rendi eseguibile lo script
+doas chmod +x /usr/local/bin/shutdown
+
+
