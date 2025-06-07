@@ -681,70 +681,22 @@ if [ -f "$ROOT"/etc/modules ] ; then
 fi
 eend 0
 
-# ======================= SIDECAR SQUASHFS LIVE BOOT =======================
+# ======================= SIDECAR SQUASHFS LIVE BOOT (Versione Definitiva) =======================
+# Se viene rilevato il nostro parametro per l'avvio live, configuriamo
+# il sistema con overlayfs e saltiamo direttamente a switch_root.
 if [ -n "${KOPT_alpinelivelabel}" ]; then
 
-	# DEBUG VISIVO IMMEDIATO
-	echo ">>> PENGUINS' EGGS SIDECAR ATTIVATO <<<"
+	ebegin "Penguins' eggs: Initializing hardware devices"
 
-	ebegin "Penguins' eggs: setting up SquashFS live environment"
+	# Usiamo lo strumento nativo di Alpine per inizializzare i dispositivi
+	# e ignoriamo il suo codice di uscita, perché a noi basta il suo effetto.
+	$MOCK nlplug-findfs -p /sbin/mdev ${KOPT_usbdelay:+-t $(( $KOPT_usbdelay * 1000 ))}
+	eend 0
 
-	echo "DEBUG: Eseguo mdev -s e attendo 2 secondi..."
-	mdev -s
-	sleep 2
-	
-	echo "--- PAUSA DEBUG 1 ---"
-	echo "Ora ispezioneremo /sys/block/ per trovare i dischi."
-	echo "Premi INVIO per continuare..."
-	read
-
-	ebegin "Manually creating device symlinks"
-	mkdir -p /dev/disk/by-label /dev/disk/by-uuid
-	
-	FOUND_ANYTHING=0
-	for D in /sys/block/*; do
-		echo "DEBUG: Trovato disco in /sys/block: $(basename $D)"
-		
-		for P in $D/*; do
-			if [ -f "$P/partition" ]; then
-				DEVNAME=$(basename $P)
-				echo "DEBUG: Trovata partizione $DEVNAME."
-				
-				if [ -b "/dev/$DEVNAME" ]; then
-					echo "DEBUG: /dev/$DEVNAME esiste. Eseguo blkid..."
-					eval $(blkid -o export /dev/$DEVNAME)
-					
-					if [ -n "$LABEL" ]; then
-						echo "DEBUG: TROVATO! LABEL=$LABEL per /dev/$DEVNAME"
-						ln -s /dev/$DEVNAME /dev/disk/by-label/"$LABEL"
-						FOUND_ANYTHING=1
-					fi
-					unset DEVNAME LABEL UUID
-				else
-					echo "DEBUG: ERRORE! /dev/$DEVNAME non è stato creato."
-				fi
-			fi
-		done
-	done
-
-	echo "--- PAUSA DEBUG 2 ---"
-	echo "La creazione dei link è terminata."
-	echo "Contenuto di /dev/disk/by-label/:"
-	ls /dev/disk/by-label/
-	echo "Premi INVIO per continuare..."
-	read
-
-	if [ $FOUND_ANYTHING -eq 0 ]; then
-		eend 1 "Nessuna partizione con LABEL trovata."
-	else
-		eend 0
-	fi
-
-	# --- INIZIO: Logica di attesa per il dispositivo ---
-	WAIT_TIMEOUT=5 
+	# Cerchiamo il nostro dispositivo tramite la sua etichetta.
+	WAIT_TIMEOUT=5
 	SECONDS_WAITED=0
 	devicelive=""
-
 	while [ -z "$devicelive" ] && [ $SECONDS_WAITED -lt $WAIT_TIMEOUT ]; do
 		devicelive=$(findfs "LABEL=${KOPT_alpinelivelabel}")
 		if [ -z "$devicelive" ]; then
@@ -752,14 +704,18 @@ if [ -n "${KOPT_alpinelivelabel}" ]; then
 			SECONDS_WAITED=$((SECONDS_WAITED + 1))
 		fi
 	done
-	
-	# --- FINE: Logica di attesa ---
 
+	# Se non troviamo il dispositivo, andiamo in recovery.
 	if [ -z "$devicelive" ]; then
-		eend 1 "Device with LABEL=${KOPT_alpinelivelabel} not found"
+		eend 1 "Device with LABEL=${KOPT_alpinelivelabel} not found after scan"
 	else
+		# Dispositivo trovato, procediamo con il montaggio.
+		eend 0 "Found device ${devicelive}"
 		fstype=$(blkid -l -t LABEL="${KOPT_alpinelivelabel}" -o value -s TYPE)
 
+		ebegin "Mounting live filesystem"
+		
+		# Creiamo il mountpoint prima di provare a usarlo.
 		mkdir /mnt
 		mkdir -p /media/root-ro
 		mkdir -p /media/root-rw
