@@ -9,7 +9,7 @@
 #	alpinelivelabel 
 #	cow_spacesize
 #
-# find line: `$MOCK mount -t tmpfs -o $rootflags tmpfs $sysroot`
+# fing line: `$MOCK mount -t tmpfs -o $rootflags tmpfs $sysroot`
 #
 # and insert sidecar.in there
 # 

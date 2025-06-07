@@ -1,78 +1,86 @@
-# ======================= SIDECAR SQUASHFS LIVE BOOT (Versione Elegante) =======================
-# Se viene rilevato il nostro parametro per l'avvio live, configuriamo
-# il sistema con overlayfs e saltiamo direttamente a switch_root.
+# ======================= SIDECAR PER METODO A (ALPINE DISKLESS) =======================
+# Questo blocco sostituisce la logica di boot diskless standard.
+# Prepara un sysroot con overlay e lascia che lo script init prosegua con 'apk add'.
+
+# Controlliamo se stiamo facendo un boot live con il nostro metodo
 if [ -n "${KOPT_alpinelivelabel}" ]; then
 
-	ebegin "Penguins' eggs: Initializing hardware devices"
-
-	# L'ECCELLENTE IDEA DELL'UTENTE: Usiamo lo strumento nativo di Alpine
-	# per inizializzare i dispositivi, ma senza fargli cercare repository o apkovl.
-	# Questo comando esegue mdev, popola /dev e crea i symlink by-label/by-uuid.
-	# Includiamo l'opzione per il ritardo USB per la massima compatibilità.
+	# 1. PREPARAZIONE AMBIENTE
+	ebegin "Penguins' eggs: Initializing live boot environment"
+	
+	# Usiamo il metodo corretto per inizializzare i device e creare i symlink
 	$MOCK nlplug-findfs -p /sbin/mdev ${KOPT_usbdelay:+-t $(( $KOPT_usbdelay * 1000 ))}
-	eend $? # Controlliamo l'esito. Se fallisce, lancia la recovery shell.
+	eend 0 # Ignoriamo l'exit code, ci basta l'effetto
 
-	# --- INIZIO: Logica di attesa per il dispositivo ---
-	# Ora che i dispositivi sono stati inizializzati correttamente, cerchiamo la nostra etichetta.
-	WAIT_TIMEOUT=10 # Diamo comunque qualche secondo per sicurezza
-	SECONDS_WAITED=0
-	devicelive=""
-
-	while [ -z "$devicelive" ] && [ $SECONDS_WAITED -lt $WAIT_TIMEOUT ]; do
-		devicelive=$(findfs "LABEL=${KOPT_alpinelivelabel}")
-		if [ -z "$devicelive" ]; then
-			sleep 1
-			SECONDS_WAITED=$((SECONDS_WAITED + 1))
-		fi
-	done
-	# --- FINE: Logica di attesa ---
-
+	# Cerchiamo il nostro dispositivo
+	devicelive=$(findfs "LABEL=${KOPT_alpinelivelabel}")
 	if [ -z "$devicelive" ]; then
-		eend 1 "Device with LABEL=${KOPT_alpinelivelabel} not found after scan"
-	else
-		# Abbiamo trovato il dispositivo, procediamo come prima.
-		eend 0 "Found device ${devicelive}"
-		fstype=$(blkid -l -t LABEL="${KOPT_alpinelivelabel}" -o value -s TYPE)
-
-		ebegin "Mounting live filesystem"
-		mkdir /mnt
-		mkdir -p /media/root-ro
-		mkdir -p /media/root-rw
-		mkdir -p /media/root-rw/work
-		mkdir -p /media/root-rw/root
-
-		mount -t $fstype ${devicelive} /mnt && \
-		mount -t squashfs /mnt${KOPT_alpinelivesquashfs} /media/root-ro && \
-		mount -t tmpfs root-tmpfs /media/root-rw && \
-		mount -t overlay overlay -o lowerdir=/media/root-ro,upperdir=/media/root-rw/root,workdir=/media/root-rw/work $sysroot
-		
-		if ! mountpoint -q "$sysroot"; then
-			eend 1 "Failed to mount overlayfs to $sysroot"
-		else
-			eend 0
-			[ ! -d "$sysroot/etc" ] && mkdir -p "$sysroot/etc"
-			echo 21733847458759515a19bd2466cdd5de > $sysroot/etc/machine-id
-
-			ebegin "Finalizing live environment"
-			setup_inittab_console
-			! [ -f "$sysroot"/etc/resolv.conf ] && [ -f /etc/resolv.conf ] && \
-				cp /etc/resolv.conf "$sysroot"/etc
-			eend 0
-
-			cat "$ROOT"/proc/mounts 2>/dev/null | while read DEV DIR TYPE OPTS ; do
-				if [ "$DIR" != "/" -a "$DIR" != "$sysroot" -a -d "$DIR" ]; then
-					mkdir -p $sysroot/$DIR
-					$MOCK mount -o move $DIR $sysroot/$DIR
-				fi
-			done
-			sync
-			
-			echo "Switching to live root..."
-			exec switch_root $switch_root_opts $sysroot "$KOPT_init" $KOPT_init_args
-
-			echo "Failed to switch_root from live environment. Emergency shell launched."
-			exec /bin/busybox sh
-		fi
+		eend 1 "Live media with LABEL=${KOPT_alpinelivelabel} not found!"
+		# In caso di fallimento, lancia una shell
+		/bin/busybox sh
 	fi
+	eend 0 "Found live media on ${devicelive}"
+
+	# 2. CREAZIONE DELL'OVERLAY FS
+	ebegin "Penguins' eggs: Preparing overlay filesystem"
+	
+	# Assicuriamoci che il modulo del filesystem del disco sia caricato (es. iso9660)
+	# Questa riga è ridondante se l'abbiamo già modificata prima, ma è una sicurezza
+	modprobe -a iso9660 squashfs overlay
+
+	# Creiamo tutti i punti di montaggio
+	mkdir /mnt
+	mkdir -p /media/root-ro
+	mkdir -p /media/root-rw/work /media/root-rw/root
+	
+	# Montiamo la sorgente, lo squashfs, il tmpfs e infine l'overlay
+	mount -t iso9660 ${devicelive} /mnt && \
+	mount -t squashfs /mnt${KOPT_alpinelivesquashfs} /media/root-ro && \
+	mount -t tmpfs root-tmpfs /media/root-rw && \
+	mount -t overlay overlay -o lowerdir=/media/root-ro,upperdir=/media/root-rw/root,workdir=/media/root-rw/work $sysroot
+
+	if ! mountpoint -q "$sysroot"; then
+		eend 1 "Failed to mount overlayfs on $sysroot"
+		/bin/busybox sh
+	fi
+
+	# Pulizia: smontiamo il disco sorgente, non serve più ed evita errori fstab
+	umount /mnt
+	eend 0
+
+	# 3. CONFIGURAZIONE RETE (necessaria per apk)
+	if $do_networking; then
+		configure_ip
+	fi
+
+	# La preparazione è finita. Lo script init principale ora continuerà,
+	# eseguirà 'apk add' sul nostro $sysroot e infine farà lo switch_root.
+
+else
+	# Se NON usiamo il nostro metodo live, esegui la logica diskless originale
+	# (Qui ricopiamo il blocco originale che abbiamo sostituito)
+	resume_from_disk
+
+	if $do_networking; then
+		repoopts="-n"
+	else
+		repoopts="-b $repofile"
+	fi
+	ebegin "Mounting boot media"
+	$MOCK nlplug-findfs $cryptopts -p /sbin/mdev ${KOPT_debug_init:+-d} \
+		${KOPT_usbdelay:+-t $(( $KOPT_usbdelay * 1000 ))} \
+		${KOPT_uevent_buf_size:+-U $KOPT_uevent_buf_size} \
+		$repoopts -a "$ROOT"/tmp/apkovls
+	eend $?
+
+	if $do_networking; then
+		configure_ip
+	fi
+	if [ "$SINGLEMODE" = "yes" ]; then
+		echo "Entering single mode. Type 'exit' to continue booting."
+		sh
+	fi
+	rootflags="mode=0755,${KOPT_rootflags}"
+	$MOCK mount -t tmpfs -o $rootflags tmpfs $sysroot
 fi
-# ===================== FINE SIDECAR SQUASHFS LIVE BOOT =====================
+# ===================== FINE SIDECAR =====================
