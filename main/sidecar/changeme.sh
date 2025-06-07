@@ -727,10 +727,6 @@ if [ -n "${KOPT_alpinelivelabel}" ]; then
 		mount -t tmpfs root-tmpfs /media/root-rw && \
 		mount -t overlay overlay -o lowerdir=/media/root-ro,upperdir=/media/root-rw/root,workdir=/media/root-rw/work $sysroot
 
-		# PULIZIA FINALE: Smontiamo il dispositivo da /mnt.
-		# Non ci serve più e previene errori con fstab nel sistema finale.
-		umount /mnt
-		
 		if ! mountpoint -q "$sysroot"; then
 			eend 1 "Failed to mount overlayfs to $sysroot"
 		else
@@ -745,7 +741,8 @@ if [ -n "${KOPT_alpinelivelabel}" ]; then
 			eend 0
 
 			cat "$ROOT"/proc/mounts 2>/dev/null | while read DEV DIR TYPE OPTS ; do
-				if [ "$DIR" != "/" -a "$DIR" != "$sysroot" -a -d "$DIR" ]; then
+				## non passa /mnt come mount
+			    if [ "$DIR" != "/" -a "$DIR" != "$sysroot" -a "$DIR" != "/mnt" -a -d "$DIR" ]; then
 					mkdir -p $sysroot/$DIR
 					$MOCK mount -o move $DIR $sysroot/$DIR
 				fi
