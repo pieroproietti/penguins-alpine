@@ -740,9 +740,9 @@ if [ -n "${KOPT_alpinelivelabel}" ]; then
 				cp /etc/resolv.conf "$sysroot"/etc
 			eend 0
 
+			## Esclude /mnt dal mount sul sistema finale
 			cat "$ROOT"/proc/mounts 2>/dev/null | while read DEV DIR TYPE OPTS ; do
-				## non passa /mnt come mount
-			    if [ "$DIR" != "/" -a "$DIR" != "$sysroot" -a "$DIR" != "/mnt" -a -d "$DIR" ]; then
+				if [ "$DIR" != "/" -a "$DIR" != "$sysroot" -a "$DIR" != "$sysroot/usr" -a "$DIR" != "/mnt" -a -d "$DIR" ]; then
 					mkdir -p $sysroot/$DIR
 					$MOCK mount -o move $DIR $sysroot/$DIR
 				fi
