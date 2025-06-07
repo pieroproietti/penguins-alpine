@@ -681,19 +681,13 @@ if [ -f "$ROOT"/etc/modules ] ; then
 fi
 eend 0
 
-# ======================= SIDECAR SQUASHFS LIVE BOOT (Versione Definitiva) =======================
-# Se viene rilevato il nostro parametro per l'avvio live, configuriamo
-# il sistema con overlayfs e saltiamo direttamente a switch_root.
+# ======================= SIDECAR SQUASHFS LIVE BOOT (Debug Mount Finale) =======================
 if [ -n "${KOPT_alpinelivelabel}" ]; then
 
 	ebegin "Penguins' eggs: Initializing hardware devices"
-
-	# Usiamo lo strumento nativo di Alpine per inizializzare i dispositivi
-	# e ignoriamo il suo codice di uscita, perché a noi basta il suo effetto.
 	$MOCK nlplug-findfs -p /sbin/mdev ${KOPT_usbdelay:+-t $(( $KOPT_usbdelay * 1000 ))}
 	eend 0
 
-	# Cerchiamo il nostro dispositivo tramite la sua etichetta.
 	WAIT_TIMEOUT=5
 	SECONDS_WAITED=0
 	devicelive=""
@@ -705,32 +699,70 @@ if [ -n "${KOPT_alpinelivelabel}" ]; then
 		fi
 	done
 
-	# Se non troviamo il dispositivo, andiamo in recovery.
 	if [ -z "$devicelive" ]; then
 		eend 1 "Device with LABEL=${KOPT_alpinelivelabel} not found after scan"
 	else
-		# Dispositivo trovato, procediamo con il montaggio.
 		eend 0 "Found device ${devicelive}"
 		fstype=$(blkid -l -t LABEL="${KOPT_alpinelivelabel}" -o value -s TYPE)
 
 		ebegin "Mounting live filesystem"
 		
-		# Creiamo il mountpoint prima di provare a usarlo.
+		# --- INIZIO BLOCCO DI DEBUG PASSO-PASSO ---
+		
+		echo "--- FASE 1: MONTAGGIO DISPOSITIVO ---"
 		mkdir /mnt
-		mkdir -p /media/root-ro
-		mkdir -p /media/root-rw
-		mkdir -p /media/root-rw/work
-		mkdir -p /media/root-rw/root
+		mount -t $fstype ${devicelive} /mnt
+		if [ $? -ne 0 ]; then
+			echo "!!! FALLIMENTO: Mount del dispositivo ${devicelive} su /mnt fallito."
+			echo "Premi INVIO per andare in recovery shell..."
+			read
+			eend 1 "Mount device failed"
+		fi
+		echo "--- OK: Dispositivo montato su /mnt."
+		echo "CONTENUTO DI /mnt:"
+		ls -l /mnt
+		echo "Premi INVIO per continuare..."
+		read
 
-		mount -t $fstype ${devicelive} /mnt && \
-		mount -t squashfs /mnt${KOPT_alpinelivesquashfs} /media/root-ro && \
-		mount -t tmpfs root-tmpfs /media/root-rw && \
+		echo "--- FASE 2: MONTAGGIO SQUASHFS ---"
+		SQUASHFS_PATH="/mnt${KOPT_alpinelivesquashfs}"
+		echo "Tento di montare lo SquashFS da: ${SQUASHFS_PATH}"
+		mkdir -p /media/root-ro
+		mount -t squashfs ${SQUASHFS_PATH} /media/root-ro
+		if [ $? -ne 0 ]; then
+			echo "!!! FALLIMENTO: Mount del file SquashFS fallito."
+			echo "Controlla che il percorso e il nome del file siano corretti nel parametro di boot!"
+			echo "Premi INVIO per andare in recovery shell..."
+			read
+			eend 1 "Mount squashfs failed"
+		fi
+		echo "--- OK: SquashFS montato su /media/root-ro."
+		echo "Premi INVIO per continuare..."
+		read
+
+		echo "--- FASE 3: MONTAGGIO OVERLAY ---"
+		mkdir -p /media/root-rw/work /media/root-rw/root
+		mount -t tmpfs root-tmpfs /media/root-rw
 		mount -t overlay overlay -o lowerdir=/media/root-ro,upperdir=/media/root-rw/root,workdir=/media/root-rw/work $sysroot
+		if [ $? -ne 0 ]; then
+			echo "!!! FALLIMENTO: Mount dell'overlay su $sysroot fallito."
+			echo "Premi INVIO per andare in recovery shell..."
+			read
+			eend 1 "Mount overlayfs failed"
+		fi
+		echo "--- OK: Overlay montato su $sysroot."
+		echo "Premi INVIO per continuare..."
+		read
+		# --- FINE BLOCCO DI DEBUG ---
 
 		if ! mountpoint -q "$sysroot"; then
 			eend 1 "Failed to mount overlayfs to $sysroot"
 		else
 			eend 0
+			# PULIZIA FINALE: Smontiamo il dispositivo da /mnt per evitare errori con fstab.
+			# Lo facciamo solo se il mount dell'overlay ha avuto successo.
+			umount /mnt
+
 			[ ! -d "$sysroot/etc" ] && mkdir -p "$sysroot/etc"
 			echo 21733847458759515a19bd2466cdd5de > $sysroot/etc/machine-id
 
@@ -740,7 +772,7 @@ if [ -n "${KOPT_alpinelivelabel}" ]; then
 				cp /etc/resolv.conf "$sysroot"/etc
 			eend 0
 
-			## Esclude /mnt dal mount sul sistema finale
+			# Escludiamo /mnt dallo spostamento dei mount
 			cat "$ROOT"/proc/mounts 2>/dev/null | while read DEV DIR TYPE OPTS ; do
 				if [ "$DIR" != "/" -a "$DIR" != "$sysroot" -a "$DIR" != "$sysroot/usr" -a "$DIR" != "/mnt" -a -d "$DIR" ]; then
 					mkdir -p $sysroot/$DIR
@@ -757,7 +789,7 @@ if [ -n "${KOPT_alpinelivelabel}" ]; then
 		fi
 	fi
 fi
-# ===================== FINE SIDECAR SQUASHFS LIVE BOOT =====================
+# ===================== FINE SIDECAR SQUASHFS LIVE BOOT (Debug Mount Finale) =====================
 
 # workaround for vmware
 if [ -n "$KOPT_cryptroot" ]; then
