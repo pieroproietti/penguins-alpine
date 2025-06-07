@@ -726,6 +726,10 @@ if [ -n "${KOPT_alpinelivelabel}" ]; then
 		mount -t squashfs /mnt${KOPT_alpinelivesquashfs} /media/root-ro && \
 		mount -t tmpfs root-tmpfs /media/root-rw && \
 		mount -t overlay overlay -o lowerdir=/media/root-ro,upperdir=/media/root-rw/root,workdir=/media/root-rw/work $sysroot
+
+		# PULIZIA FINALE: Smontiamo il dispositivo da /mnt.
+		# Non ci serve più e previene errori con fstab nel sistema finale.
+		umount /mnt
 		
 		if ! mountpoint -q "$sysroot"; then
 			eend 1 "Failed to mount overlayfs to $sysroot"
