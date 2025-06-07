@@ -745,7 +745,6 @@ ln -s /proc/mounts "$ROOT"/etc/mtab
 
 # check if root=... was set
 if [ -n "$KOPT_root" ]; then
-
 	# run nlplug-findfs before SINGLEMODE so we load keyboard drivers
 	ebegin "Mounting root"
 	$MOCK nlplug-findfs $cryptopts -p /sbin/mdev ${KOPT_debug_init:+-d} \
@@ -819,7 +818,6 @@ if [ -n "$KOPT_root" ]; then
 	exec switch_root $switch_root_opts $sysroot $chart_init "$KOPT_init" $KOPT_init_args
 	echo "initramfs emergency recovery shell launched"
 	exec /bin/busybox sh
-
 	# sidecar start <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	# edit /usr/share/mkinitfs/initramfs-init
 	#
@@ -900,13 +898,7 @@ else
 		# end sidecar
 	fi
 	# sidecar end <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-	ebegin "Mounting tmpfs for diskless boot"
-	$MOCK mount -t tmpfs -o $rootflags tmpfs $sysroot
-	eend $?
-
 fi
-
 resume_from_disk
 
 if $do_networking; then
@@ -1138,7 +1130,6 @@ else
 fi
 $MOCK umount $sysroot/sys $sysroot/proc $sysroot/dev
 eend $?
-
 
 # unmount ovl mount if needed
 if [ -n "$ovl_unmount" ]; then

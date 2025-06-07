@@ -11,7 +11,6 @@ penguins-sidecar/
 ```
 ## PRELIMINARI
 * [Installazione Alpine con strumenti di sviluppo](./INSTALLAZIONE.md)
-* [Installazione APKBUILD](./APKBUILD.md)
 
 ## Come Funziona il sidecar
 
@@ -27,21 +26,21 @@ Il sidecar:
 ```bash
 git clone https://gitlab.alpinelinux.org/alpine/mkinitfs 
 ```
-- apri il  file: `sidecar-mkinitfs/initramfs-init.in` 
 
-- cerca la dichiarazione di `myopts` ed aggiungi le variabili`:
+Duplica il `initramfs-init-original` in `initramfs-init`:
 ```
-alpinelivesquashfs
-alpinelivelabel
-cow_spacesize
+cp main/sidecar/initramfs-init-original main/sidecar/initramfs-init
 ```
-- Copia ed incolla il file `sidecar.in` in `/sidecar-mkinitfs/mkinitfs.in`, seguendo le istruzioni nel codice stesso:
 
-insert just after: `$MOCK mount -t tmpfs -o $rootflags tmpfs $sysroot`
+Appllica le modifice descritte in `sidecar.in`, quindi copia `initramfs-init` in
+`/usr/share/mkinitfs/initramfs-init`:
+
+```
+doas cp main/sidecar/initramfs-init /usr/share/mkinitfs/initramfs-init
+```
 
 ## Uso del sidecar
-
-Copia l'init modificato nella tua initramfs e usa questi parametri di boot:
+Usa questi parametri di boot, esempio:
 ```
 alpinelivelabel=colibri alpinelivesquashfs=/mnt/live/filesystem.squashfs
 ```
