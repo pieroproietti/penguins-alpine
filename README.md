@@ -27,7 +27,7 @@ Il sidecar:
 git clone https://gitlab.alpinelinux.org/alpine/mkinitfs 
 ```
 
-Duplica il `initramfs-init-original` in `initramfs-init`:
+Duplica il `initramfs-init-original` PULITO in `initramfs-init`:
 ```
 cp main/sidecar/initramfs-init-original main/sidecar/initramfs-init
 ```
