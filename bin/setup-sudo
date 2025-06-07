@@ -1,7 +1,8 @@
 # Crea un alias per sudo
 doas tee /usr/local/bin/sudo << 'EOF' > /dev/null
 #!/bin/sh
-echo "Use: doas $@"
+doas "$@" 
+#echo "Use: doas 
 EOF
 
 # Rendi eseguibile lo script

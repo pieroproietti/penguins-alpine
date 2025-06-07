@@ -873,7 +873,7 @@ else
 					
 					# La root è pronta. Saltiamo al finale.
 					# Aggiungi configurazioni finali necessarie
-					# setup_inittab_console
+					setup_inittab_console
 					! [ -f "$sysroot"/etc/resolv.conf ] && [ -f /etc/resolv.conf ] && \
 						cp /etc/resolv.conf "$sysroot"/etc
 

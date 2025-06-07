@@ -40,7 +40,7 @@ subpackages="$pkgname-bash-completion $pkgname-doc"
 # Usa il commit specifico
 builddir="$srcdir"/penguins-eggs-$_commit
 source="https://github.com/pieroproietti/penguins-eggs/archive/$_commit/penguins-eggs-$_commit.tar.gz"
-#options="!check net !checksum" # No tests, no checksum verification
+
 
 build() {
  pnpm install
@@ -103,6 +103,4 @@ package() {
  ln -s /usr/lib/"$pkgname"/bin/run.js "$pkgdir"/usr/bin/eggs
 }
 
-sha512sums="
-09b575d5ba38e65041661f376815ecce1a17261649508fa56f1fa47af8b272ed11d443bbfecdf8fc9bdab6c858253d447944dda8fa125443f64adea77adba038  penguins-eggs-3ac337876eac18e147cbccce0de2fdd4f0cbcfa6.tar.gz
-"
+
