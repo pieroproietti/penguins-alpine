@@ -5,10 +5,26 @@ Repository per gestire facilmente il sidecar di penguins' eggs con Alpine Linux.
 ## Struttura
 
 ```
+```ascii
 penguins-sidecar/
-├── README.md
-└── sidecar.in 
+├── main/
+│   ├── penguins-eggs/
+│   │   ├── APKBUILD
+│   │   ├── README.md
+│   │   ├── clean
+│   │   ├── penguins-eggs.post-install
+│   │   └── piero.proietti@gmail.com-68452915.rsa.pub
+│   ├── sidecar/
+│   │   ├── README.md
+│   │   ├── clean
+│   │   ├── initramfs-init
+│   │   ├── initramfs-init-original
+│   │   └── sidecar.in
+│   └── README.md
+├── INSTALLAZIONE.md
+└── README.md
 ```
+
 ## PRELIMINARI
 * [Installazione Alpine con strumenti di sviluppo](./INSTALLAZIONE.md)
 
