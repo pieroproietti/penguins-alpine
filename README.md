@@ -15,7 +15,6 @@ penguins-sidecar/
 │   │   ├── penguins-eggs.post-install
 │   ├── sidecar/
 │   │   ├── README.md
-│   │   ├── clean
 │   │   ├── initramfs-init
 │   │   ├── initramfs-init-original
 │   │   └── sidecar.in
@@ -25,7 +24,7 @@ penguins-sidecar/
 ```
 
 ## PRELIMINARI
-* [Installazione Alpine con strumenti di sviluppo](./INSTALLAZIONE.md)
+* [Installazione Alpine desktop](./INSTALLAZIONE.md)
 
 ## Come Funziona il sidecar
 
