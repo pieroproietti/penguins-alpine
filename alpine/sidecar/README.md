@@ -7,11 +7,11 @@ doas apk add util-linux-dev kmod-dev cryptsetup-dev linux-headers
 ```
 
 ```
-cp main/sidecar/initramfs-init-original main/sidecar/initramfs-init
+cp alpine/sidecar/initramfs-init-original alpine/sidecar/initramfs-init
 ```
 
 Apply the sidecar.in
 
 ```
-doas cp main/sidecar/initramfs-init /usr/share/mkinitfs/initramfs-init
+doas cp alpinen/sidecar/initramfs-init /usr/share/mkinitfs/initramfs-init
 ```

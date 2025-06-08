@@ -7,7 +7,7 @@ Repository per gestire facilmente il sidecar di penguins' eggs con Alpine Linux.
 ```
 ```ascii
 penguins-sidecar/
-├── main/
+├── alpine/
 │   ├── penguins-eggs/
 │   │   ├── APKBUILD
 │   │   ├── README.md
@@ -43,14 +43,14 @@ git clone https://gitlab.alpinelinux.org/alpine/mkinitfs
 
 Duplica il `initramfs-init-original` PULITO in `initramfs-init`:
 ```
-cp main/sidecar/initramfs-init-original main/sidecar/initramfs-init
+cp alpine/sidecar/initramfs-init-original alpine/sidecar/initramfs-init
 ```
 
 Appllica le modifice descritte in `sidecar.in`, quindi copia `initramfs-init` in
 `/usr/share/mkinitfs/initramfs-init`:
 
 ```
-doas cp main/sidecar/initramfs-init /usr/share/mkinitfs/initramfs-init
+doas cp alpine/sidecar/initramfs-init /usr/share/mkinitfs/initramfs-init
 ```
 
 ## Uso del sidecar
