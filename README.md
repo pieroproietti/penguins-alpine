@@ -13,7 +13,6 @@ penguins-sidecar/
 │   │   ├── README.md
 │   │   ├── clean
 │   │   ├── penguins-eggs.post-install
-│   │   └── piero.proietti@gmail.com-68452915.rsa.pub
 │   ├── sidecar/
 │   │   ├── README.md
 │   │   ├── clean
