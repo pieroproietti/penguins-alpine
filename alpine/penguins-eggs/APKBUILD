@@ -27,6 +27,7 @@ depends="
  nodejs
  parted
  rsync
+ shadow
  squashfs-tools
  sshfs
  xorriso
