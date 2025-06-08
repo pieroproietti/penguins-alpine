@@ -3,10 +3,10 @@
 # Contributor: Piero Proietti <piero.proietti@gmail.com>
 # Mantainer  : Piero Proietti <piero.proietti@gmail.com>
 # 
-_commit=f870bb9fa987a500b089c30ac204615c6e2e1e5f
+_commit=40c136bcffb745f9feee29b75dafa32d8d4deaca
 pkgname=penguins-eggs
 pkgver=10.1.1
-pkgrel=7
+pkgrel=8
 pkgdesc="A console tool that allows you to remaster your system and redistribute it as live images on USB sticks or via PXE"
 url="https://penguins-eggs.net"
 arch="x86_64"
@@ -106,5 +106,5 @@ package() {
 
 
 sha512sums="
-e264dc6c18476fd6262d194a7962a1bf5db774cf27314e65061886407c05e4062b0a9b99ba1ca7e898de5e28b89597e09683f8254a757e86484fbc6ad612ef6c  penguins-eggs-f870bb9fa987a500b089c30ac204615c6e2e1e5f.tar.gz
+fe29a05dca5539a20310226954ecc942a656763bcb77747977a2f411839f1c4cad1553c2bd35894028cd8fe3a18da7c2f4e2d1e46c526fa963ba62c702d32aff  penguins-eggs-40c136bcffb745f9feee29b75dafa32d8d4deaca.tar.gz
 "
