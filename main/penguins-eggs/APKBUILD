@@ -6,7 +6,7 @@
 pkgname=penguins-eggs
 pkgver=10.1.1
 pkgrel=6
-_commit=3ac337876eac18e147cbccce0de2fdd4f0cbcfa6
+_commit=bc087b452c647b126651f6f8c52ee963ec5538f4
 pkgdesc="A console tool that allows you to remaster your system and redistribute it as live images on USB sticks or via PXE"
 url="https://penguins-eggs.net"
 arch="x86_64"
@@ -105,5 +105,5 @@ package() {
 
 
 sha512sums="
-09b575d5ba38e65041661f376815ecce1a17261649508fa56f1fa47af8b272ed11d443bbfecdf8fc9bdab6c858253d447944dda8fa125443f64adea77adba038  penguins-eggs-3ac337876eac18e147cbccce0de2fdd4f0cbcfa6.tar.gz
+2bbcd73fff187fcd6e7458479c94806a8f12c8c2b9cd0a16fccd4f224527a10832b8db45c4054c43cbafa4e43d2ec3475a0828718c588e97fb9e4d3666596dff  penguins-eggs-bc087b452c647b126651f6f8c52ee963ec5538f4.tar.gz
 "
