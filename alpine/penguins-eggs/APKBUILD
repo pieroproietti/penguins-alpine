@@ -3,10 +3,10 @@
 # Contributor: Piero Proietti <piero.proietti@gmail.com>
 # Mantainer  : Piero Proietti <piero.proietti@gmail.com>
 # 
-_commit=40c136bcffb745f9feee29b75dafa32d8d4deaca
+_commit=d583aaa983bbe16b54cb1f74eeb4928d907c20c2
 pkgname=penguins-eggs
 pkgver=10.1.1
-pkgrel=8
+pkgrel=9
 pkgdesc="A console tool that allows you to remaster your system and redistribute it as live images on USB sticks or via PXE"
 url="https://penguins-eggs.net"
 arch="x86_64"
@@ -98,6 +98,10 @@ package() {
 
  # revitalize mom
  chmod +x "$pkgdir"/usr/lib/penguins-eggs/scripts/mom.sh
+
+# We need fuse loaded
+  install -d "$pkgdir"/etc/modules-load.d
+  echo fuse > "$pkgdir"/etc/modules-load.d/penguins-eggs-fuse.conf
 
  # Symlink executable
  install -d "$pkgdir/"usr/bin
