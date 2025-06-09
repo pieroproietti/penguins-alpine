@@ -17,13 +17,14 @@ Abilitare il modulo fuse:
 echo fuse > /etc/modules-load.d/fuse.conf
 ```
 
-## abuild
+## setup-me
 ```
-rm $HOME/.abuild
+#!/bin/sh
+rm $HOME/.abuild -rf
 mkdir $HOME/.abuild
-scp -r root@192.168.1.2:/eggs/alpine .
-cp alpine/piero.proietti@gmail.com-68452915.rsa.pub .abulid
-cp alpine/private/piero.proietti@gmail.com-68452915.rsa $HOME/.abulid
+scp -r root@192.168.1.2:/eggs/alpine /tmp
+cp /tmp/alpine/piero.proietti@gmail.com-68452915.rsa.pub $HOME/.abuild
+cp /tmp/alpine/private/piero.proietti@gmail.com-68452915.rsa $HOME/.abuild
 tee $HOME/.abuild/abuild.conf << 'EOF' > /dev/null
 PACKAGER="Piero Proietti <piero.proietti@gmail.com>"
 MAINTAINER="$PACKAGER"
@@ -31,5 +32,7 @@ PACKAGER_PRIVKEY="$HOME/.abuild/piero.proietti@gmail.com-68452915.rsa"
 DESTDIR="$HOME/packages/main"
 DLDIR="$HOME/sources"
 EOF
-doas cp alpine/piero.proietti@gmail.com-68452915.rsa.pub /etc/apk/keys
+doas cp /tmp/alpine/private/piero.proietti@gmail.com-68452915.rsa /etc/apk/keys
+rm /tmp/alpine -rf
+
 ```
