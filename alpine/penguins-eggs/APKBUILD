@@ -1,6 +1,6 @@
 # Mantainer  : Piero Proietti <piero.proietti@gmail.com>
 # 
-_commit=eb27433922247f996470a184b646266eb5312afd
+_commit=7f19e9ae65940bfadfd0b91a65184ef8065d5a01
 _APKBUILD_HOME=$HOME/penguins-sidecar/alpine/penguins-eggs
 pkgname=penguins-eggs
 pkgver=$(cat $_APKBUILD_HOME/version)
@@ -12,6 +12,7 @@ license="GPL-3.0-or-later"
 depends="
  alpine-conf
  apk-tools
+ bash
  bash-completion
  cryptsetup
  curl
@@ -23,6 +24,7 @@ depends="
  jq
  mkinitfs
  musl-locales
+ nodejs
  parted
  rsync
  shadow
@@ -112,5 +114,5 @@ check() {
 }
 
 sha512sums="
-979f3f11850f48ffb4d7320dfb342e74c007ee07d4ad5c4de458f4c1a6c92470396e4c76130bcc818e05b87896f77c9dc63602a6d9175bcb01c775391def7a40  penguins-eggs-eb27433922247f996470a184b646266eb5312afd.tar.gz
+367fec931c22fd01c7e1c288a86a4553bf9d418ddbc0b3dbdbd558974c1fd8f759fe8ad2aafb051b255667791745c89238c5ae0a9613f178975bfc13c088a266  penguins-eggs-7f19e9ae65940bfadfd0b91a65184ef8065d5a01.tar.gz
 "
