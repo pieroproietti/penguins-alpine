@@ -1,11 +1,9 @@
-# Alpine
-#
 # Mantainer  : Piero Proietti <piero.proietti@gmail.com>
 # 
 _commit=eb27433922247f996470a184b646266eb5312afd
 pkgname=penguins-eggs
-pkgver=10.1.1
-pkgrel=9
+pkgver=$(cat $HOME/penguins-sidecar/alpine/penguins-eggs/version)
+pkgrel="$(cat $HOME/penguins-sidecar/alpine/penguins-eggs/release)"
 pkgdesc="A console tool that allows you to remaster your system and redistribute it as live images on USB sticks or via PXE"
 url="https://penguins-eggs.net"
 arch="x86_64"

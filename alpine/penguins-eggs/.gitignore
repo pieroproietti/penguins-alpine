@@ -5,6 +5,9 @@
 !.gitignore
 !abuild.conf
 !APKBUILD
+!alpine.sh
 !clean
 !README.md
+!release
 !penguins-eggs.*
+!version
