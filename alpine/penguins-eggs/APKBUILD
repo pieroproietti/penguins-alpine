@@ -1,9 +1,8 @@
 # Alpine
 #
-# Contributor: Piero Proietti <piero.proietti@gmail.com>
 # Mantainer  : Piero Proietti <piero.proietti@gmail.com>
 # 
-_commit=d583aaa983bbe16b54cb1f74eeb4928d907c20c2
+_commit=eb27433922247f996470a184b646266eb5312afd
 pkgname=penguins-eggs
 pkgver=10.1.1
 pkgrel=9
@@ -24,7 +23,7 @@ depends="
  lvm2
  jq
  mkinitfs
- nodejs
+ musl-locales
  parted
  rsync
  shadow
