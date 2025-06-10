@@ -1,9 +1,10 @@
 # Mantainer  : Piero Proietti <piero.proietti@gmail.com>
 # 
 _commit=eb27433922247f996470a184b646266eb5312afd
+_APKBUILD_HOME=$HOME/penguins-sidecar/alpine/penguins-eggs
 pkgname=penguins-eggs
-pkgver=$(cat $HOME/penguins-sidecar/alpine/penguins-eggs/version)
-pkgrel="$(cat $HOME/penguins-sidecar/alpine/penguins-eggs/release)"
+pkgver=$(cat $_APKBUILD_HOME/version)
+pkgrel="$(cat $_APKBUILD_HOME/release)"
 pkgdesc="A console tool that allows you to remaster your system and redistribute it as live images on USB sticks or via PXE"
 url="https://penguins-eggs.net"
 arch="x86_64"
@@ -105,6 +106,10 @@ package() {
  ln -s /usr/lib/"$pkgname"/bin/run.js "$pkgdir"/usr/bin/eggs
 }
 
+check() {
+    doas eggs dad -d
+    eggs status
+}
 
 sha512sums="
 979f3f11850f48ffb4d7320dfb342e74c007ee07d4ad5c4de458f4c1a6c92470396e4c76130bcc818e05b87896f77c9dc63602a6d9175bcb01c775391def7a40  penguins-eggs-eb27433922247f996470a184b646266eb5312afd.tar.gz
