@@ -1,6 +1,6 @@
 # Mantainer  : Piero Proietti <piero.proietti@gmail.com>
 # 
-_commit=7f19e9ae65940bfadfd0b91a65184ef8065d5a01
+_commit=fa5b36f397921d4a41ea17ac87ae0e09f4e592dc
 _APKBUILD_HOME=$HOME/penguins-sidecar/alpine/penguins-eggs
 pkgname=penguins-eggs
 pkgver=$(cat $_APKBUILD_HOME/version)
