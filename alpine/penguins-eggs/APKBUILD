@@ -11,7 +11,6 @@ license="GPL-3.0-or-later"
 
 # per fregare scanelf
 #options="!glibc"
-options="!check"
 
 depends="
   alpine-conf
@@ -116,9 +115,15 @@ package() {
    ln -s /usr/lib/"$pkgname"/bin/run.js "$pkgdir"/usr/bin/eggs
 }
 
-#check() {
-#  eggs version
-#}
+check() {
+  eggs version
+}
+
+
+penguins-eggs() {
+  pkgdesc="A console tool that allows you to remaster your system and redistribute it as live images on USB sticks or via PXE"
+  options="!check"
+}
 
 penguins-eggs-doc() {
   pkgdesc="Documentation for penguins-eggs"
