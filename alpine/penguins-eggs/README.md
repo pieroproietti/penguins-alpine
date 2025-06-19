@@ -13,3 +13,7 @@ La chiave usata è:
 
 ## setup-me
 doas bin/setup-me
+
+## Tools
+
+`sudo apk add alpine-sdk atools`

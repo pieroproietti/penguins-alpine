@@ -1,41 +1,46 @@
-# Mantainer  : Piero Proietti <piero.proietti@gmail.com>
-# 
+# Maintainer: Piero Proietti <piero.proietti@gmail.com>
+#
 _commit=fa5b36f397921d4a41ea17ac87ae0e09f4e592dc
-_APKBUILD_HOME=$HOME/penguins-sidecar/alpine/penguins-eggs
 pkgname=penguins-eggs
-pkgver=$(cat $_APKBUILD_HOME/version)
-pkgrel="$(cat $_APKBUILD_HOME/release)"
+pkgver=10.1.1
+pkgrel=14
 pkgdesc="A console tool that allows you to remaster your system and redistribute it as live images on USB sticks or via PXE"
 url="https://penguins-eggs.net"
 arch="x86_64"
 license="GPL-3.0-or-later"
-depends="
- alpine-conf
- apk-tools
- bash
- bash-completion
- cryptsetup
- curl
- dosfstools
- git
- fuse
- lsblk
- lvm2
- jq
- mkinitfs
- musl-locales
- nodejs
- parted
- rsync
- shadow
- squashfs-tools
- sshfs
- xorriso
- zstd
- zstd-dev
- libc6-compat"
 
-makedepends="pnpm musl"
+# per fregare scanelf
+#options="!glibc"
+options="!check"
+
+depends="
+  alpine-conf
+  apk-tools
+  bash
+  bash-completion
+  cryptsetup
+  curl
+  dosfstools
+  fuse
+  gcompat
+  git
+  jq
+  libc6-compat
+  lsblk
+  lvm2
+  mkinitfs
+  musl-locales
+  nodejs
+  parted
+  rsync
+  shadow
+  squashfs-tools
+  sshfs
+  xorriso
+  zstd
+"
+
+makedepends="gcompat libc6-compat pnpm zstd-dev"
 subpackages="$pkgname-bash-completion $pkgname-doc"
 
 # Usa il commit specifico
@@ -44,16 +49,16 @@ source="https://github.com/pieroproietti/penguins-eggs/archive/$_commit/penguins
 
 
 build() {
- pnpm install
- pnpm build
+  pnpm install
+  pnpm build
 }
 
 package() {
 
- install -Dm644 .oclif.manifest.json package.json \
+  install -Dm644 .oclif.manifest.json package.json \
   -t "$pkgdir/usr/lib/$pkgname/"
 
- cp -r addons \
+  cp -a addons \
   assets \
   bin \
   conf \
@@ -66,52 +71,71 @@ package() {
   scripts \
   syslinux \
   "$pkgdir/usr/lib/$pkgname/"
- 
- # Fix permissions
- chown root:root "$pkgdir/usr/lib/$pkgname/"
- 
- # Package contains reference to $srcdir
- find "$pkgdir/usr/lib/$pkgname" -name package.json -print0 | xargs -r -0 sed -i '/_where/d'
- 
- # Install documentation
- install -Dm644 README.md -t "$pkgdir/usr/share/doc/$pkgname/"
 
- # Install bash completion files
- install -d "$pkgdir"/usr/share/bash-completion/completions
- mv "$pkgdir/usr/lib/$pkgname/scripts/eggs.bash" \
-  "$pkgdir"/usr/share/bash-completion/completions/
+  # Fix permissions
+  chown -R root:root "$pkgdir/usr/lib/$pkgname/"
 
- # Install Zsh completion files
- install -d "$pkgdir"/usr/share/zsh/functions/Completion/Zsh/
- mv "$pkgdir/usr/lib/$pkgname/scripts/_eggs" \
-  "$pkgdir"/usr/share/zsh/functions/Completion/Zsh/
+  # Package contains reference to $srcdir
+  find "$pkgdir/usr/lib/$pkgname" -name package.json -print0 | xargs -r -0 sed -i '/_where/d'
 
- # Install man page
+  # Install documentation
+  install -Dm644 README.md -t "$pkgdir/usr/share/doc/$pkgname/"
+
+  # Install bash completion files
+  install -d "$pkgdir"/usr/share/bash-completion/completions
+  mv "$pkgdir/usr/lib/$pkgname/scripts/eggs.bash" \
+    "$pkgdir"/usr/share/bash-completion/completions/
+
+  # Install Zsh completion files
+  install -d "$pkgdir"/usr/share/zsh/functions/Completion/Zsh/
+  mv "$pkgdir/usr/lib/$pkgname/scripts/_eggs" \
+    "$pkgdir"/usr/share/zsh/functions/Completion/Zsh/
+
+  # Install man page
   install -Dm644 manpages/doc/man/eggs.1.gz -t "$pkgdir"/usr/share/man/man1/
 
- # Install desktop file
- install -Dm644 "assets/$pkgname.desktop" \
-  -t "$pkgdir"/usr/share/applications/
+  # create applications
+  install -d "${pkgdir}/usr/share/applications"
 
- # Install icon
- install -Dm644 assets/eggs.png -t "$pkgdir"/usr/share/pixmaps/
+  # Install desktop file
+  install -Dm644 "assets/$pkgname.desktop" \
+    -t "$pkgdir"/usr/share/applications/
 
- # revitalize mom
- chmod +x "$pkgdir"/usr/lib/penguins-eggs/scripts/mom.sh
+  # Install icon
+  install -Dm644 assets/eggs.png -t "$pkgdir"/usr/share/pixmaps/
 
-# We need fuse loaded
+  # revitalize mom
+  chmod +x "$pkgdir"/usr/lib/penguins-eggs/scripts/mom.sh
+
+  # We need fuse loaded
   install -d "$pkgdir"/etc/modules-load.d
   echo fuse > "$pkgdir"/etc/modules-load.d/penguins-eggs-fuse.conf
 
- # Symlink executable
- install -d "$pkgdir/"usr/bin
- ln -s /usr/lib/"$pkgname"/bin/run.js "$pkgdir"/usr/bin/eggs
+  # Symlink executable
+   install -d "$pkgdir/"usr/bin
+   ln -s /usr/lib/"$pkgname"/bin/run.js "$pkgdir"/usr/bin/eggs
 }
 
-check() {
-    doas eggs dad -d
-    eggs status
+#check() {
+#  eggs version
+#}
+
+penguins-eggs-doc() {
+  pkgdesc="Documentation for penguins-eggs"
+
+  install -d "$subpkgdir"/usr/share
+  mv "$pkgdir"/usr/share/doc  "$subpkgdir"/usr/share
+  mv "$pkgdir"/usr/share/man "$subpkgdir"/usr/share
 }
+
+penguins-eggs-bash-completion() {
+  pkgdesc="Bash completion for penguins-eggs"
+  depends="bash-completion" # Il subpackage ha le sue dipendenze
+  
+  install -d "$subpkgdir"/usr/share
+  mv "$pkgdir"/usr/share/bash-completion "$subpkgdir"/usr/share/
+}
+
 
 sha512sums="
 b98a68be10f6b843d73e4601c45bbae090ec0cf3212e95578ac6ecf8e1e41d4480aad0f13dac36ebe9361fa6326ab27d1b46a6ba0bcd56dc7e77eb04fd650558  penguins-eggs-fa5b36f397921d4a41ea17ac87ae0e09f4e592dc.tar.gz
