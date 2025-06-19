@@ -131,7 +131,7 @@ penguins-eggs-doc() {
 penguins-eggs-bash-completion() {
   pkgdesc="Bash completion for penguins-eggs"
   depends="bash-completion" # Il subpackage ha le sue dipendenze
-  
+
   install -d "$subpkgdir"/usr/share
   mv "$pkgdir"/usr/share/bash-completion "$subpkgdir"/usr/share/
 }
