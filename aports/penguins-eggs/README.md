@@ -1,19 +1,19 @@
 # APKBUILD penguins-eggs
 
-abuild checksum
-abuild
+# IMPORTANTE
 
-L'utente deve essere parte del gruppo abuild:
+Installare sul sistema:
+```
+sudo apk add gcompat libc6compat
+```
 
-`adduser artisan abuild`
+e, ***CRUCIALE*** creare il seguente link:
+```
+ln -s /lib/ld-musl-x86_64.so.1 /lib/libdl.so.2
+```
 
-La chiave usata è: 
-- privata: piero.proietti@gmail.com-68452915.rsa (solo per lo sviluppatore ) va posta in `~/.agbuild` insiame alla corrisponedente chiave pubblica;
-- pubblica: piero.proietti@gmail.com-68452915.rsa.pub (per usare i pacchetti)  va posta in `/etc/apk/keys`.
+quindi:
 
-## setup-me
-doas bin/setup-me
-
-## Tools
-
-`sudo apk add alpine-sdk atools`
+```
+./go
+```

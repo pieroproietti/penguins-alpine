@@ -1,6 +1,6 @@
 # Maintainer: Piero Proietti <piero.proietti@gmail.com>
 #
-_commit=fa5b36f397921d4a41ea17ac87ae0e09f4e592dc
+_commit=2a8195bdb3ef9a9753312310ccfbe81481cf6092
 pkgname=penguins-eggs
 pkgver=10.1.1
 pkgrel=14
@@ -21,10 +21,8 @@ depends="
   curl
   dosfstools
   fuse
-  gcompat
   git
   jq
-  libc6-compat
   lsblk
   lvm2
   mkinitfs
@@ -37,6 +35,7 @@ depends="
   sshfs
   xorriso
   zstd
+  gcompat
   libc6-compat
 "
 
@@ -49,12 +48,15 @@ source="https://github.com/pieroproietti/penguins-eggs/archive/$_commit/penguins
 
 
 build() {
+  #ln -s /lib/ld-musl-x86_64.so.1 /lib/libdl.so.2
   pnpm install
+  # pnpm approve-builds
   pnpm build
 }
 
 package() {
-  set -x # Attiva il debug da qui
+  # set -x # Attiva il debug da qui
+  # ln -s /lib/ld-musl-x86_64.so.1 /lib/ld-linux-x86_64.so.2
 
   install -Dm644 .oclif.manifest.json package.json \
   -t "$pkgdir/usr/lib/$pkgname/"
@@ -145,5 +147,5 @@ penguins-eggs-bash-completion() {
 
 
 sha512sums="
-b98a68be10f6b843d73e4601c45bbae090ec0cf3212e95578ac6ecf8e1e41d4480aad0f13dac36ebe9361fa6326ab27d1b46a6ba0bcd56dc7e77eb04fd650558  penguins-eggs-fa5b36f397921d4a41ea17ac87ae0e09f4e592dc.tar.gz
+8b6171b3c0a9530aa022a580f7cd49041b729780fc1a40ae5b061196d58ae95b6f0899890935058b1075dc4e1f8942c964fcfae98af7125232dfcc7e4f6aba0f  penguins-eggs-2a8195bdb3ef9a9753312310ccfbe81481cf6092.tar.gz
 "
