@@ -6,7 +6,7 @@ Repository per gestire facilmente il sidecar di penguins' eggs con Alpine Linux.
 
 ```
 ```ascii
-penguins-sidecar/
+penguins-alpine/
 ├── aports/
 │   ├── penguins-eggs/
 │   │   ├── APKBUILD
@@ -27,6 +27,9 @@ penguins-sidecar/
 * [Installazione Alpine desktop](./INSTALLAZIONE.md)
 
 ## Come Funziona il sidecar
+Il sidecar consiste in una patch a inittra,s-init che aggiunge 
+le catatteristiche di permettere l'avvio da una ISO prodotta 
+con penguins-eggs.
 
 Il sidecar:
 1. Cerca un dispositivo con la label specificata
@@ -35,7 +38,7 @@ Il sidecar:
 4. Crea un overlay con tmpfs per le modifiche
 5. Configura il sistema per il boot live
 
-## Attacca il sidecar alla moto
+## Attaccare il sidecar alla moto
 
 ```bash
 git clone https://gitlab.alpinelinux.org/alpine/mkinitfs 
