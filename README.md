@@ -7,7 +7,7 @@ Repository per gestire facilmente il sidecar di penguins' eggs con Alpine Linux.
 ```
 ```ascii
 penguins-sidecar/
-├── alpine/
+├── aports/
 │   ├── penguins-eggs/
 │   │   ├── APKBUILD
 │   │   ├── README.md

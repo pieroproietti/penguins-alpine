@@ -1,8 +1,0 @@
-#!/bin/sh
-set -e
-
-git clone --no-checkout https://gitlab.alpinelinux.org/alpine/aports.git/
-cd aports
-git sparse-checkout init --cone
-git sparse-checkout set main/mkinitfs
-git checkout

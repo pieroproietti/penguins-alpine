@@ -1,6 +1,0 @@
-#!/bin/sh
-set -e
-
-git clone https://gitlab.alpinelinux.org/alpine/mkinitfs 
-echo "inserisci sidecar.in in /mkinitfs/mkinitfs.in"
-code sidecar.in mkinitfs/mkinitfs.in
