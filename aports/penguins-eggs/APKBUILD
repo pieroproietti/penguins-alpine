@@ -37,6 +37,7 @@ depends="
   sshfs
   xorriso
   zstd
+  libc6-compat
 "
 
 makedepends="gcompat libc6-compat pnpm zstd-dev"
@@ -53,6 +54,7 @@ build() {
 }
 
 package() {
+  set -x # Attiva il debug da qui
 
   install -Dm644 .oclif.manifest.json package.json \
   -t "$pkgdir/usr/lib/$pkgname/"
