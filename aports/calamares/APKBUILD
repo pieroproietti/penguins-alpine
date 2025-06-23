@@ -1,7 +1,7 @@
 # Maintainer: Piero Proietti <piero.proietti@gmail.com>
 # copiato da https://pkgs.alpinelinux.org/package/v3.16/community/x86_64/calamares
 pkgname=calamares
-pkgver=3.3.14
+pkgver=3.3.6
 pkgrel=1
 # armhf blocked by qt5-qtdeclarative
 # ppc64le, s390x, and riscv64 blocked by qt5-qtwebengine
@@ -31,12 +31,13 @@ makedepends="$depends_dev
 	kwidgetsaddons-dev
 	libatasmart-dev
 	libpwquality-dev
-	plasma-framework-dev
 	polkit-elogind
 	qt6-qtbase-dev
 	qt6-qtdeclarative-dev
 	qt6-qtsvg-dev
 	qt6-qtwebengine-dev
+    kdeclarative-dev
+    kiconthemes-dev
 	"
 # required for several modules
 makedepends="$makedepends
@@ -183,6 +184,6 @@ package() {
 }
 
 sha512sums="
-b402a450c6af04632738c4aaa871644f72e848bd49a1214cf0c9fa7d7f9b07ebf00b98a39cd009b422970633ef2f02b5f7abeccfdda22a343b70c251083ad0c8  calamares-3.3.14.tar.gz
+3fa38f136a7a8c1f7dc2be8f98d2f323e38ab3bb535ffaf833d26839c3a2fe1d1dab392cd103380098328fc7465f262cde7ae09efa996c7fb66233d8391ae4f6  calamares-3.3.6.tar.gz
 c56ad3b92901abdb41cffaeceeff9a6c8dae3882aacf9a4b654a8898f1e26eeadda3ac3ac799b127b176cc31d397652f27a07bcdfbf7f4ede3c6826d08f7bd7d  modules-load.conf
 "
