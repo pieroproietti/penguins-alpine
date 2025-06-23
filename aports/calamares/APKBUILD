@@ -1,7 +1,8 @@
 # Maintainer: Piero Proietti <piero.proietti@gmail.com>
 # copiato da https://pkgs.alpinelinux.org/package/v3.16/community/x86_64/calamares
 # removed
-#	kparts-dev
+#	webview plasmainf
+
 pkgname=calamares
 
 pkgver=3.3.6
@@ -84,7 +85,6 @@ _modules="
 	packagechooser
 	packages
 	partition
-	plasmalnf
 	plymouthcfg
 	preservefiles
 	rawfs
@@ -95,7 +95,6 @@ _modules="
 	umount
 	unpackfs
 	users
-	webview
 	welcome
 	welcomeq
 	"
@@ -142,6 +141,7 @@ build() {
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib \
 		-DINSTALL_CONFIG=ON \
+   		-DWITH_QT6=ON \
 		-DSKIP_MODULES="$_skip_modules"
 	cmake --build build
 }
@@ -149,7 +149,8 @@ build() {
 check() {
 	cd build
 	# libcalamaresnetworktest requires network access
-	CTEST_OUTPUT_ON_FAILURE=TRUE xvfb-run ctest -E "libcalamaresnetworktest"
+    # libcalamareslocaletest fails in minimal build environments
+	CTEST_OUTPUT_ON_FAILURE=TRUE xvfb-run ctest -E "libcalamaresnetworktest|libcalamareslocaletest"
 }
 
 _module() {
