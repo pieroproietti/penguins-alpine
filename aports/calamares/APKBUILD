@@ -1,10 +1,11 @@
 # Maintainer: Piero Proietti <piero.proietti@gmail.com>
 # copiato da https://pkgs.alpinelinux.org/package/v3.16/community/x86_64/calamares
+# removed
+#	kparts-dev
 pkgname=calamares
+
 pkgver=3.3.6
 pkgrel=1
-# armhf blocked by qt5-qtdeclarative
-# ppc64le, s390x, and riscv64 blocked by qt5-qtwebengine
 arch="all !armhf !ppc64le !s390x !riscv64"
 url="https://calamares.io/"
 pkgdesc="Distribution-independent installer framework"
@@ -14,38 +15,37 @@ depends="
 	musl-locales
 	os-prober
 	"
+
 depends_dev="
 	extra-cmake-modules
 	kcoreaddons-dev
-	qt5-qttools-dev
+	qt6-qttools-dev
 	yaml-cpp-dev
 	"
-makedepends="$depends_dev
+
+makedepends="
+	$depends_dev
 	kconfig-dev
 	kcrash-dev
 	ki18n-dev
 	kpackage-dev
-	kparts-dev
 	kpmcore-dev
 	kservice-dev
 	kwidgetsaddons-dev
 	libatasmart-dev
 	libpwquality-dev
-	polkit-elogind
+	polkit-elogind-dev
 	qt6-qtbase-dev
 	qt6-qtdeclarative-dev
 	qt6-qtsvg-dev
 	qt6-qtwebengine-dev
-    kdeclarative-dev
-    kiconthemes-dev
-	"
-# required for several modules
-makedepends="$makedepends
+	kdeclarative-dev
+	kiconthemes-dev
 	boost-dev
-	boost-python3
 	parted-dev
 	python3-dev
 	"
+
 checkdepends="
 	py3-toml
 	tzdata
