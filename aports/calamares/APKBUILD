@@ -1,7 +1,8 @@
 # Maintainer: Piero Proietti <piero.proietti@gmail.com>
 # copiato da https://pkgs.alpinelinux.org/package/v3.16/community/x86_64/calamares
 # removed
-#	webview plasmainf
+#	webview plasmainf 	interactiveterminal
+
 
 pkgname=calamares
 
@@ -68,7 +69,6 @@ _modules="
 	grubcfg
 	hostinfo
 	hwclock
-	interactiveterminal
 	keyboard
 	keyboardq
 	locale
