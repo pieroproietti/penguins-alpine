@@ -1,4 +1,5 @@
 # Maintainer: Piero Proietti <piero.proietti@gmail.com>
+# copiato da https://pkgs.alpinelinux.org/package/v3.16/community/x86_64/calamares
 pkgname=calamares
 pkgver=3.3.14
 pkgrel=1
@@ -31,11 +32,11 @@ makedepends="$depends_dev
 	libatasmart-dev
 	libpwquality-dev
 	plasma-framework-dev
-	polkit-qt-1-dev
-	qt5-qtbase-dev
-	qt5-qtdeclarative-dev
-	qt5-qtsvg-dev
-	qt5-qtwebengine-dev
+	polkit-elogind
+	qt6-qtbase-dev
+	qt6-qtdeclarative-dev
+	qt6-qtsvg-dev
+	qt6-qtwebengine-dev
 	"
 # required for several modules
 makedepends="$makedepends
