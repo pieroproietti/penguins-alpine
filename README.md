@@ -31,8 +31,7 @@ penguins-alpine/
 * [Installazione Alpine desktop](./INSTALLAZIONE.md)
 
 ## Come Funziona il sidecar
-Il sidecar consiste in una patch a inittra,s-init che aggiunge 
-le catatteristiche di permettere l'avvio da una ISO prodotta 
+Il sidecar consiste in una [patch](./aports/sidecar/sidecar.in) ad [inittramfs-init](./aports/sidecar/initramfs-init) che aggiunge le catatteristiche di permettere l'avvio da una ISO prodotta 
 con penguins-eggs.
 
 Il sidecar:
@@ -43,17 +42,12 @@ Il sidecar:
 5. Configura il sistema per il boot live
 
 ## Attaccare il sidecar alla moto
-
-```bash
-git clone https://gitlab.alpinelinux.org/alpine/mkinitfs 
-```
-
 Duplica il `initramfs-init-original` PULITO in `initramfs-init`:
 ```
 cp alpine/sidecar/initramfs-init-original alpine/sidecar/initramfs-init
 ```
 
-Appllica le modifice descritte in `sidecar.in`, quindi copia `initramfs-init` in
+Applica le modifice descritte in [sidecar.in](./aports/sidecar/sidecar.in), quindi copia il nuovo 'initramfs-init` in
 `/usr/share/mkinitfs/initramfs-init`:
 
 ```
