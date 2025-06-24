@@ -1,4 +1,4 @@
-# Penguins' eggs sidecar per Alpine Linux
+# Penguins Alpine
 
 Repository per gestire facilmente il sidecar di penguins' eggs con Alpine Linux.
 
@@ -8,11 +8,15 @@ Repository per gestire facilmente il sidecar di penguins' eggs con Alpine Linux.
 ```ascii
 penguins-alpine/
 ├── aports/
+│   ├── calamares/
+│   │   ├── APKBUILD
+│   │   ├── go
+│   │   └── README.md
 │   ├── penguins-eggs/
 │   │   ├── APKBUILD
+│   │   ├── go
 │   │   ├── README.md
-│   │   ├── clean
-│   │   ├── penguins-eggs.post-install
+│   │   └── penguins-eggs.post-install
 │   ├── sidecar/
 │   │   ├── README.md
 │   │   ├── initramfs-init
