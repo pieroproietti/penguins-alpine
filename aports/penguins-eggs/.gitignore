@@ -7,6 +7,7 @@
 !APKBUILD
 !alpine.sh
 !clean
+!go
 !README.md
 !release
 !penguins-eggs.*
