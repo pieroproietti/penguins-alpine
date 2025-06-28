@@ -1,9 +1,9 @@
 # Maintainer: Piero Proietti <piero.proietti@gmail.com>
 #
-_commit=2d1b017dc3067b5b3a81a19538db9d9a82d88fd4
+_commit=8f4d4ccccf59b7fce15b29325b48308042d28f14
 pkgname=penguins-eggs
 pkgver=10.1.1
-pkgrel=19
+pkgrel=20
 pkgdesc="A console tool that allows you to remaster your system and redistribute it as live images on USB sticks or via PXE"
 url="https://penguins-eggs.net"
 arch="x86_64"
