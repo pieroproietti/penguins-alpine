@@ -1,9 +1,9 @@
 #!/bin/sh
 rm $HOME/.abuild -rf
 mkdir $HOME/.abuild
-scp -r root@192.168.1.2:/eggs/alpine /tmp
-cp /tmp/alpine/install/piero.proietti@gmail.com-68452915.rsa.pub $HOME/.abuild
-cp /tmp/alpine/install/private/piero.proietti@gmail.com-68452915.rsa $HOME/.abuild
+scp -r root@192.168.1.2:/eggs/alpine/install /tmp
+cp /tmp/install/piero.proietti@gmail.com-68452915.rsa.pub $HOME/.abuild
+cp /tmp/install/private/piero.proietti@gmail.com-68452915.rsa $HOME/.abuild
 tee $HOME/.abuild/abuild.conf << 'EOF' > /dev/null
 PACKAGER="Piero Proietti <piero.proietti@gmail.com>"
 MAINTAINER="$PACKAGER"
