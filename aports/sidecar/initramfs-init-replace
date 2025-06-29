@@ -832,6 +832,9 @@ if [ -n "$KOPT_root" ]; then
 	# insert sidecar.in affer the line 820
 	# exec /bin/busybox sh # 
 else
+	echo "alpinelivelabel: $KOPT_alpinelivelabel"
+	echo "alpinelivesquashfs: $KOPT_alpinelivesquashfs"
+	echo "cow_spacesize: $KOPT_cow_spacesize"
 	if [ -n "$KOPT_alpinelivelabel" ] && [ -n "$KOPT_alpinelivesquashfs" ]; then
 		SQUASHFS_MOUNTED=no
 
@@ -841,13 +844,13 @@ else
 			SQUASHFS_URL="$KOPT_alpinelivesquashfs"
 
 			# 1. Attendi che la rete (ip=dhcp) sia pronta.
-			echo ">>> Waiting for network configuration..." > "$ROOT"/dev/kmsg
-			max_wait=30; count=0
-			while ! ip route get 8.8.8.8 >/dev/null 2>&1; do
-				sleep 1; count=$((count + 1))
-				[ $count -ge $max_wait ] && eend 1 "Network timeout" && /bin/sh
-			done
-			echo ">>> Network is ready." > "$ROOT"/dev/kmsg
+			#echo ">>> Waiting for network configuration..." > "$ROOT"/dev/kmsg
+			#max_wait=30; count=0
+			#while ! ip route get 8.8.8.8 >/dev/null 2>&1; do
+			#	sleep 1; count=$((count + 1))
+		    #	[ $count -ge $max_wait ] && eend 1 "Network timeout" && /bin/sh
+			#	done
+			#echo ">>> Network is ready." > "$ROOT"/dev/kmsg
 
 			# 2. Scarica il filesystem in RAM (/tmp)
 			echo ">>> Downloading filesystem from $SQUASHFS_URL..." > "$ROOT"/dev/kmsg
@@ -871,7 +874,8 @@ else
 			ebegin "Booting from local media (USB/ISO)"
 			
 			$MOCK nlplug-findfs -p /sbin/mdev ${KOPT_usbdelay:+-t $(( $KOPT_usbdelay * 1000 ))}
-			
+			eend 0	# Ci interessa solo settare /dev/disk/by-lanel
+
 			devicelive=$(findfs "LABEL=${KOPT_alpinelivelabel}")
 			if [ -z "$devicelive" ]; then
 				eend 1 "Live media with label '${KOPT_alpinelivelabel}' not found!" && /bin/sh
@@ -894,7 +898,8 @@ else
 
 			if [ "$mount_success" = "yes" ]; then
 				mkdir -p /media/root-ro
-				mount -t squashfs -o ro "/mnt/livemedia${KOPT_alpinelivesquashfs}" /media/root-ro
+				#${KOPT_alpinelivesquashfs}
+				mount -t squashfs -o ro "/mnt/livemedia/live/filesystem.squashfs" /media/root-ro
 				if [ $? -eq 0 ]; then
 					SQUASHFS_MOUNTED=yes
 					eend 0 "Local media boot successful"
@@ -914,6 +919,9 @@ else
 			mkdir -p /media/root-rw/work /media/root-rw/root
 			mount -t overlay overlay -o lowerdir=/media/root-ro,upperdir=/media/root-rw/root,workdir=/media/root-rw/work $sysroot
 			
+			# just a dummy value for /etc/machine-id
+			echo 21733847458759515a19bd2466cdd5de | tee /sysroot/etc/machine-id
+			
 			if [ -x "$sysroot/$KOPT_init" ]; then
 				eend 0 "Overlay ready"
 				[ ! -f "$sysroot"/etc/resolv.conf ] && [ -f /etc/resolv.conf ] && cp /etc/resolv.conf "$sysroot"/etc
@@ -925,8 +933,7 @@ else
 					fi
 				done
 				sync
-				
-				echo ">>> Switching to live system..." > "$ROOT"/dev/kmsg
+				echo "Switching to live system..." > "$ROOT"/dev/kmsg
 				exec switch_root $switch_root_opts "$sysroot" $chart_init "$KOPT_init" $KOPT_init_args
 			else
 				eend 1 "Could not find init in new rootfs"
