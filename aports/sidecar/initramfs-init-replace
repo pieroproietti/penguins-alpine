@@ -843,14 +843,14 @@ else
 			ebegin "Booting from network (PXE)"
 			SQUASHFS_URL="$KOPT_alpinelivesquashfs"
 
-			# 1. Attendi che la rete (ip=dhcp) sia pronta.
-			#echo ">>> Waiting for network configuration..." > "$ROOT"/dev/kmsg
-			#max_wait=30; count=0
-			#while ! ip route get 8.8.8.8 >/dev/null 2>&1; do
-			#	sleep 1; count=$((count + 1))
-		    #	[ $count -ge $max_wait ] && eend 1 "Network timeout" && /bin/sh
-			#	done
-			#echo ">>> Network is ready." > "$ROOT"/dev/kmsg
+			# 1. Esegui la funzione standard e robusta per configurare la rete.
+			#    Questa funzione si occupa di lanciare DHCP e impostare le rotte.
+			configure_ip
+			if [ $? -ne 0 ]; then
+				eend 1 "Network configuration failed (DHCP)"
+				# Se fallisce, usciamo, non ha senso continuare.
+				/bin/sh
+			fi
 
 			# 2. Scarica il filesystem in RAM (/tmp)
 			echo ">>> Downloading filesystem from $SQUASHFS_URL..." > "$ROOT"/dev/kmsg
