@@ -1,6 +1,6 @@
 # Maintainer: Piero Proietti <piero.proietti@gmail.com>
 #
-_commit=13b627da87411851048399e89952f55fb5d014cb
+_commit=6aec8503237ec87dd45c6907a193fc711fca5c72
 pkgname=penguins-eggs
 pkgver=10.1.1
 pkgrel=20
@@ -35,7 +35,6 @@ depends="
   sshfs
   xorriso
   zstd
-  gcompat
   libc6-compat
 "
 
@@ -147,5 +146,5 @@ penguins-eggs-bash-completion() {
 }
 
 sha512sums="
-976b5d917518dd4794e40e4b71b3afecee78061146a3fc681c32090b4064ba7374cf595132f59b13a5f89359ac6a4813809b402bfe5e1b2d9274de6f71c7a447  penguins-eggs-13b627da87411851048399e89952f55fb5d014cb.tar.gz
+27fed47de7a187a4c773f934a8c83e66c793dca71416268362ee556fab816178fc8a7bac99d4ad49edc3e8ce2dab21119fa10599b1a59d9bc321ae25659fe376  penguins-eggs-6aec8503237ec87dd45c6907a193fc711fca5c72.tar.gz
 "
