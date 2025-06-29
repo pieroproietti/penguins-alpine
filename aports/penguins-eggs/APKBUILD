@@ -1,6 +1,6 @@
 # Maintainer: Piero Proietti <piero.proietti@gmail.com>
 #
-_commit=6aec8503237ec87dd45c6907a193fc711fca5c72
+_commit=833bf6956c79bfa8f132315870a2a3513b3bd61c
 pkgname=penguins-eggs
 pkgver=10.1.1
 pkgrel=20
@@ -146,5 +146,5 @@ penguins-eggs-bash-completion() {
 }
 
 sha512sums="
-27fed47de7a187a4c773f934a8c83e66c793dca71416268362ee556fab816178fc8a7bac99d4ad49edc3e8ce2dab21119fa10599b1a59d9bc321ae25659fe376  penguins-eggs-6aec8503237ec87dd45c6907a193fc711fca5c72.tar.gz
+4554308c8cd79763b80e407425a75d5fbbdf95c17168758757ae06379bab12b0e04b96b56e4f03f491a5c7f43c066f12d2eb59d578835615496efdb9c953dd18  penguins-eggs-833bf6956c79bfa8f132315870a2a3513b3bd61c.tar.gz
 "

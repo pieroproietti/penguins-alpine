@@ -550,6 +550,9 @@ myopts="BOOTIF
 	usrflags
 	wireguard
 	zfcp
+	alpinelivesquashfs
+	alpinelivelabel 
+	cow_spacesize
 "
 
 for opt; do
@@ -815,8 +818,127 @@ if [ -n "$KOPT_root" ]; then
 	exec switch_root $switch_root_opts $sysroot $chart_init "$KOPT_init" $KOPT_init_args
 	echo "initramfs emergency recovery shell launched"
 	exec /bin/busybox sh
-fi
 
+	# sidecar start <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	# edit /usr/share/mkinitfs/initramfs-init
+	#
+	# add to myopts:
+	#	alpinelivesquashfs
+	#	alpinelivelabel 
+	#	cow_spacesize
+	#
+	# find line: 
+	# echo "initramfs emergency recovery shell launched"
+	# insert sidecar.in affer the line 820
+	# exec /bin/busybox sh # 
+else
+	if [ -n "$KOPT_alpinelivelabel" ] && [ -n "$KOPT_alpinelivesquashfs" ]; then
+		SQUASHFS_MOUNTED=no
+
+		# PRIMO SCENARIO: Avvio da Rete (PXE)
+		if echo "$KOPT_alpinelivesquashfs" | grep -q "^http"; then
+			ebegin "Booting from network (PXE)"
+			SQUASHFS_URL="$KOPT_alpinelivesquashfs"
+
+			# 1. Attendi che la rete (ip=dhcp) sia pronta.
+			echo ">>> Waiting for network configuration..." > "$ROOT"/dev/kmsg
+			max_wait=30; count=0
+			while ! ip route get 8.8.8.8 >/dev/null 2>&1; do
+				sleep 1; count=$((count + 1))
+				[ $count -ge $max_wait ] && eend 1 "Network timeout" && /bin/sh
+			done
+			echo ">>> Network is ready." > "$ROOT"/dev/kmsg
+
+			# 2. Scarica il filesystem in RAM (/tmp)
+			echo ">>> Downloading filesystem from $SQUASHFS_URL..." > "$ROOT"/dev/kmsg
+			wget -O /tmp/filesystem.squashfs "$SQUASHFS_URL"
+			if [ $? -ne 0 ]; then
+				eend 1 "Filesystem download failed" && /bin/sh
+			fi
+			
+			# 3. Monta il file squashfs scaricato
+			mkdir -p /media/root-ro
+			mount -t squashfs -o ro /tmp/filesystem.squashfs /media/root-ro
+			if [ $? -eq 0 ]; then
+				SQUASHFS_MOUNTED=yes
+				eend 0 "Network boot successful"
+			else
+				eend 1 "Failed to mount downloaded squashfs"
+			fi
+
+		# SECONDO SCENARIO: Avvio da Media Locale (USB/ISO)
+		else
+			ebegin "Booting from local media (USB/ISO)"
+			
+			$MOCK nlplug-findfs -p /sbin/mdev ${KOPT_usbdelay:+-t $(( $KOPT_usbdelay * 1000 ))}
+			
+			devicelive=$(findfs "LABEL=${KOPT_alpinelivelabel}")
+			if [ -z "$devicelive" ]; then
+				eend 1 "Live media with label '${KOPT_alpinelivelabel}' not found!" && /bin/sh
+			fi
+
+			echo ">>> Live media found on $devicelive" > "$ROOT"/dev/kmsg
+			mkdir -p /mnt/livemedia
+			
+			# --- LOGICA DI MOUNT ROBUSTA ---
+			mount_success=no
+			for fstype in iso9660 vfat ext4; do
+				echo ">>> Attempting to mount $devicelive as $fstype..." > "$ROOT"/dev/kmsg
+				if mount -t $fstype -o ro "$devicelive" /mnt/livemedia 2>/dev/null; then
+					mount_success=yes
+					echo ">>> Successfully mounted as $fstype." > "$ROOT"/dev/kmsg
+					break
+				fi
+			done
+			# --- FINE LOGICA DI MOUNT ROBUSTA ---
+
+			if [ "$mount_success" = "yes" ]; then
+				mkdir -p /media/root-ro
+				mount -t squashfs -o ro "/mnt/livemedia${KOPT_alpinelivesquashfs}" /media/root-ro
+				if [ $? -eq 0 ]; then
+					SQUASHFS_MOUNTED=yes
+					eend 0 "Local media boot successful"
+				else
+					eend 1 "Failed to mount squashfs from local media"
+				fi
+			else
+				eend 1 "Failed to mount live device $devicelive (tried iso9660, vfat, ext4)"
+			fi
+		fi
+
+		# PARTE COMUNE: Se lo squashfs è stato montato con successo, prepara l'overlay
+		if [ "$SQUASHFS_MOUNTED" = "yes" ]; then
+			ebegin "Setting up overlay filesystem"
+			mkdir -p /media/root-rw
+			mount -t tmpfs -o "size=${KOPT_cow_spacesize:-512M}" root-tmpfs /media/root-rw
+			mkdir -p /media/root-rw/work /media/root-rw/root
+			mount -t overlay overlay -o lowerdir=/media/root-ro,upperdir=/media/root-rw/root,workdir=/media/root-rw/work $sysroot
+			
+			if [ -x "$sysroot/$KOPT_init" ]; then
+				eend 0 "Overlay ready"
+				[ ! -f "$sysroot"/etc/resolv.conf ] && [ -f /etc/resolv.conf ] && cp /etc/resolv.conf "$sysroot"/etc
+				
+				cat "$ROOT"/proc/mounts 2>/dev/null | while read DEV DIR TYPE OPTS ; do
+					if [ "$DIR" != "/" ] && [ "$DIR" != "$sysroot" ] && [ -d "$DIR" ]; then
+						mkdir -p "$sysroot/$DIR"
+						$MOCK mount -o move "$DIR" "$sysroot/$DIR"
+					fi
+				done
+				sync
+				
+				echo ">>> Switching to live system..." > "$ROOT"/dev/kmsg
+				exec switch_root $switch_root_opts "$sysroot" $chart_init "$KOPT_init" $KOPT_init_args
+			else
+				eend 1 "Could not find init in new rootfs"
+			fi
+		fi
+		
+		echo "Live boot failed. Dropping to emergency shell." > "$ROOT"/dev/kmsg
+		/bin/sh
+	fi
+	# sidecar end <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+fi
 resume_from_disk
 
 if $do_networking; then
