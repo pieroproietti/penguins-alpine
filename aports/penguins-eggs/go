@@ -1,7 +1,7 @@
-#!/bin/ash
+#!/bin/bash
 
-#apkbuild-fixer  APKBUILD
-#abuild clean       # Remove temp build and install dirs
+apkbuild-fixer APKBUILD
+abuild clean       # Remove temp build and install dirs
 abuild cleancache  # Remove downloaded files from $SRCDEST
 abuild cleanoldpkg # Remove binary packages except current version
 abuild cleanpkg    # Remove already built binary and source package
