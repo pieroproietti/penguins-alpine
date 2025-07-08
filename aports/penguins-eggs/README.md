@@ -4,7 +4,7 @@
 
 Installare sul sistema:
 ```
-sudo apk add gcompat libc6compat
+sudo apk add gcompat libc6-compat
 ```
 
 e, ***CRUCIALE*** creare il seguente link:
