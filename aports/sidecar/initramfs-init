@@ -818,19 +818,26 @@ if [ -n "$KOPT_root" ]; then
 	exec switch_root $switch_root_opts $sysroot $chart_init "$KOPT_init" $KOPT_init_args
 	echo "initramfs emergency recovery shell launched"
 	exec /bin/busybox sh
-	# sidecar start <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-	# edit /usr/share/mkinitfs/initramfs-init
-	#
-	# add to myopts:
-	#	alpinelivesquashfs
-	#	alpinelivelabel 
-	#	cow_spacesize
-	#
-	# find line: 
-	# echo "initramfs emergency recovery shell launched"
-	# insert sidecar.in affer the line
+fi
+
+# sidecar start <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+# edit /usr/share/mkinitfs/initramfs-init
+#
+# add to myopts:
+#	alpinelivesquashfs
+#	alpinelivelabel 
+#	cow_spacesize
+#
+# find line: 
+# # check if root=... was set
+#  if [ -n "$KOPT_root" ]; then
+#   ...
+# 	echo "initramfs emergency recovery shell launched"
+# 	insert sidecar.in affer the line
 	# exec /bin/busybox sh
-else
+# fi
+if [ -z "$KOPT_root" ]; then
+  	# Sidecar will run if the variable is empty.
 	if [ -n "${KOPT_alpinelivelabel}" ] && [ -n "${KOPT_alpinelivesquashfs}" ]; then
 		ebegin "Attempting boot from live media (sidecar method)"
 		$MOCK nlplug-findfs -p /sbin/mdev ${KOPT_usbdelay:+-t $(( $KOPT_usbdelay * 1000 ))}
@@ -873,7 +880,7 @@ else
 					
 					# La root è pronta. Saltiamo al finale.
 					# Aggiungi configurazioni finali necessarie
-					setup_inittab_console
+					# setup_inittab_console
 					! [ -f "$sysroot"/etc/resolv.conf ] && [ -f /etc/resolv.conf ] && \
 						cp /etc/resolv.conf "$sysroot"/etc
 
@@ -895,10 +902,12 @@ else
 		
 		# Se siamo qui, il sidecar boot è fallito
 		eend 1 "Sidecar boot failed. Falling back to default method."
-		# end sidecar
 	fi
-	# sidecar end <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 fi
+# next line will be:
+# resume_from_disk
+# sidecar end <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
 resume_from_disk
 
 if $do_networking; then

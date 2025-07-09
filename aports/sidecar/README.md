@@ -1,17 +1,19 @@
 # sidecar-mkinitfs
 
-Prima di procedere installare:
-
+Facciamo un backup di `initramfs-init` in initramfs-init-original
 ```
-doas apk add util-linux-dev kmod-dev cryptsetup-dev linux-headers
-```
-
-```
-cp alpine/sidecar/initramfs-init-original alpine/sidecar/initramfs-init
+cp /usr/share/mkinitfs/initramfs-init ~/penguins-alpine/aports/sidecar/initramfs-init-original
 ```
 
-Apply the sidecar.in
+Quindi, ci copiamo `initramfs-init` per modificarlo:
+```
+cp ~/penguins-alpine/aports/sidecar/initramfs-init-original ~/penguins-alpine/aports/sidecar/initramfs-init
+```
+
+ed andiamo ad aggiungerervi  il `sidecar.in`.
+
+A questo punto, non ci resta che sostituire `/usr/share/mkinitfs/initramfs-init` con la nostra modifica.
 
 ```
-doas cp alpinen/sidecar/initramfs-init /usr/share/mkinitfs/initramfs-init
+doas cp ~/penguins-alpine/aports/sidecar/initramfs-init /usr/share/mkinitfs/initramfs-init
 ```
