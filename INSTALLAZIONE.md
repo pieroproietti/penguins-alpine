@@ -13,13 +13,12 @@ doas apk add git nano
 
 # clona il sidecar
 ```
-git clone https://github.com/pieroproietti/penguins-sidecar
-cd penguins-sidecar
+git clone https://github.com/pieroproietti/penguins-alpine
+cd penguins-alpine
 
 # copia ed esegui uno per uno
 doas bin/setup-code
 doas cp bin/g4* /usr/local/bin/ # This is my configuration
-doas bin/setup-requirements
 doas bin/setup-spice-vdagent
 
 # bash e bash-completion
@@ -36,6 +35,4 @@ setxkbmap it
 EOF
 g4artisan
 bin/setup-apkbuild
-
-
 ```
