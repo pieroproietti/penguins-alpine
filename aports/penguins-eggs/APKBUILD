@@ -1,8 +1,8 @@
 # Maintainer: Piero Proietti <piero.proietti@gmail.com>
 #
-_commit=3312b8c47e26122d432ec3c26658315e02351b49
+_commit=f3eca5433161d4e18f2459db3d6f67fbba73d3ea
 pkgname=penguins-eggs
-pkgver=25.8.6
+pkgver=25.8.10
 pkgrel=1
 pkgdesc="A console tool that allows you to remaster your system and redistribute it as live images on USB sticks or via PXE"
 url="https://penguins-eggs.net"
@@ -45,7 +45,10 @@ subpackages="$pkgname-bash-completion $pkgname-doc"
 
 # Usa il commit specifico
 builddir="$srcdir"/penguins-eggs-$_commit
-source="https://github.com/pieroproietti/penguins-eggs/archive/$_commit/penguins-eggs-$_commit.tar.gz"
+source="
+  https://github.com/pieroproietti/penguins-eggs/archive/$_commit/penguins-eggs-$_commit.tar.gz
+  https://github.com/pieroproietti/penguins-eggs/releases/download/v$pkgver/bootloaders.tar.gz
+"
 
 
 build() {
@@ -66,13 +69,16 @@ package() {
   cp -a addons \
   assets \
   bin \
-  bootloaders \
   conf \
   dist \
   mkinitfs \
   node_modules \
   scripts \
   "$pkgdir/usr/lib/$pkgname/"
+
+  # La seconda sorgente viene estratta in una sua cartella allo stesso livello
+  install -d -m 755 "$pkgdir/usr/lib/$pkgname/bootloaders"
+  cp -a ../bootloaders/* "$pkgdir/usr/lib/$pkgname/bootloaders/"
 
   # Fix permissions
   chown -R root:root "$pkgdir/usr/lib/$pkgname/"
@@ -146,5 +152,6 @@ penguins-eggs-bash-completion() {
 }
 
 sha512sums="
-138775090e87c554558d73b8cfe94fa40e961b664d6facc55220a646ee837cd35b53ab33b958a0d39578db5e52502033eb3a317ea9e5c75b042f419c9b42d1d6  penguins-eggs-3312b8c47e26122d432ec3c26658315e02351b49.tar.gz
+82d02ee0d3954ebd6f231230e572177598574880f3d672d3cfc4aff736f054cb342610979802f1cdba0561e5dfe27e990067984c4a3df06f71b1743837d2b0d2  penguins-eggs-f3eca5433161d4e18f2459db3d6f67fbba73d3ea.tar.gz
+7f8b79c9c5f8d2a9988d945e92024af1141f11952ad5ae0a2ffbc6ffea43e653291a1906668aecad7bdd955a8d9f858f173aa1ef7b2bb9f797e318ae9c1ef401  bootloaders.tar.gz
 "
