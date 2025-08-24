@@ -1,8 +1,8 @@
 # Maintainer: Piero Proietti <piero.proietti@gmail.com>
 #
-_commit=f3eca5433161d4e18f2459db3d6f67fbba73d3ea
+_commit=909638c86a008b758dbeede6fee9fd96a1f9d92f
 pkgname=penguins-eggs
-pkgver=25.8.10
+pkgver=25.8.24
 pkgrel=1
 pkgdesc="A console tool that allows you to remaster your system and redistribute it as live images on USB sticks or via PXE"
 url="https://penguins-eggs.net"
@@ -40,7 +40,7 @@ depends="
   libc6-compat
 "
 
-makedepends="gcompat libc6-compat pnpm zstd-dev"
+makedepends="gcompat libc6-compat pnpm zstd-dev lvm2"
 subpackages="$pkgname-bash-completion $pkgname-doc"
 
 # Usa il commit specifico
@@ -152,6 +152,6 @@ penguins-eggs-bash-completion() {
 }
 
 sha512sums="
-82d02ee0d3954ebd6f231230e572177598574880f3d672d3cfc4aff736f054cb342610979802f1cdba0561e5dfe27e990067984c4a3df06f71b1743837d2b0d2  penguins-eggs-f3eca5433161d4e18f2459db3d6f67fbba73d3ea.tar.gz
-7f8b79c9c5f8d2a9988d945e92024af1141f11952ad5ae0a2ffbc6ffea43e653291a1906668aecad7bdd955a8d9f858f173aa1ef7b2bb9f797e318ae9c1ef401  bootloaders.tar.gz
+a11cf4fc1da03d3caf07ec84d05fc93e0a4a592388f56762b3e7173700e7b3229051f5abcc413ce8db1207794edf40d008e58c848a79cd50c8ad3d2ef66a8768  penguins-eggs-909638c86a008b758dbeede6fee9fd96a1f9d92f.tar.gz
+d308fdceec16c74a0234bd16c936c918eeeac1004b75e13f3c35b2570a30faa192cafedb6e584836bb12570ff852bb88a7bf3c023dfaf3d95a9dd7cafa5fd2c7  bootloaders.tar.gz
 "
