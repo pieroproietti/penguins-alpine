@@ -1,8 +1,8 @@
 # Maintainer: Piero Proietti <piero.proietti@gmail.com>
 #
-_commit=909638c86a008b758dbeede6fee9fd96a1f9d92f
+_commit=6d29aacac604d632505ef1d2ca63d696365566e0
 pkgname=penguins-eggs
-pkgver=25.8.24
+pkgver=25.8.27
 pkgrel=1
 pkgdesc="A console tool that allows you to remaster your system and redistribute it as live images on USB sticks or via PXE"
 url="https://penguins-eggs.net"
@@ -152,6 +152,6 @@ penguins-eggs-bash-completion() {
 }
 
 sha512sums="
-a11cf4fc1da03d3caf07ec84d05fc93e0a4a592388f56762b3e7173700e7b3229051f5abcc413ce8db1207794edf40d008e58c848a79cd50c8ad3d2ef66a8768  penguins-eggs-909638c86a008b758dbeede6fee9fd96a1f9d92f.tar.gz
-d308fdceec16c74a0234bd16c936c918eeeac1004b75e13f3c35b2570a30faa192cafedb6e584836bb12570ff852bb88a7bf3c023dfaf3d95a9dd7cafa5fd2c7  bootloaders.tar.gz
+6ff530fe0982ca6303e70e9f5bdd80201b2d0ec1640eaa08094348127469e8148c57eecdc2504b49e26119c72aa1bfa4be32949214c72c3451b711fbfc1940fe  penguins-eggs-6d29aacac604d632505ef1d2ca63d696365566e0.tar.gz
+b65abdfb3a8f721eb7f7f0619cfa8c8fd4642060212270a644c6719ce5007940e99cf9dbf3df5ef1f44551a9fa1538c127aacaec23d95dace6abb3db3acc5777  bootloaders.tar.gz
 "
