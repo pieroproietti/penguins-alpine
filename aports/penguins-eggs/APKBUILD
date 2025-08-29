@@ -1,6 +1,6 @@
 # Maintainer: Piero Proietti <piero.proietti@gmail.com>
 #
-_commit=12dab2a56f502ffcb50d072209d89fba0d45c9d0
+_commit=574b30963627e83ba67c2f382d3c2395db6b3dd6
 pkgname=penguins-eggs
 pkgver=25.8.29
 pkgrel=1
@@ -152,6 +152,6 @@ penguins-eggs-bash-completion() {
 }
 
 sha512sums="
-a291bca3e91b0745ad70e5560097fe06f6c46c06514e261a9e427dddb95ddae2ed75901f92679b69d6c01e3e77bbf4678da2405deff04f1d546f6a3387860e64  penguins-eggs-2eb2da3fa3b06d7760d4e299e6d8e1692ec29373.tar.gz
+736e6f5fe76e6537d9b5c125a38ae709b8847ed2e70d65e8be843ecc803363bf4ceee82afd7c793c73c370d34dd9f2dd944f0ac9158bce107df1b3db5a879417  penguins-eggs-574b30963627e83ba67c2f382d3c2395db6b3dd6.tar.gz
 b65abdfb3a8f721eb7f7f0619cfa8c8fd4642060212270a644c6719ce5007940e99cf9dbf3df5ef1f44551a9fa1538c127aacaec23d95dace6abb3db3acc5777  bootloaders.tar.gz
 "
