@@ -1,8 +1,9 @@
 # Maintainer: Piero Proietti <piero.proietti@gmail.com>
 #
-_commit=f955a5eab6524c83dbe382e6a4af8bb933320ebb
+_bootloadersver=25.9.8
+
 pkgname=penguins-eggs
-pkgver=25.9.7
+pkgver=25.9.8
 pkgrel=1
 pkgdesc="A console tool that allows you to remaster your system and redistribute it as live images on USB sticks or via PXE"
 url="https://penguins-eggs.net"
@@ -44,11 +45,17 @@ makedepends="gcompat libc6-compat pnpm zstd-dev lvm2"
 subpackages="$pkgname-bash-completion $pkgname-doc"
 
 # Usa il commit specifico
-builddir="$srcdir"/penguins-eggs-$_commit
+builddir="$srcdir"/penguins-eggs-$pkgver
 source="
-  https://github.com/pieroproietti/penguins-eggs/archive/$_commit/penguins-eggs-$_commit.tar.gz
-  https://github.com/pieroproietti/penguins-eggs/releases/download/v$pkgver/bootloaders.tar.gz
+  $pkgname-$pkgver.tar.gz::https://github.com/pieroproietti/penguins-eggs/archive/refs/tags/v$pkgver.tar.gz
+  bootloaders.tar.gz::https://github.com/pieroproietti/penguins-bootloaders/releases/download/v$_bootloadersver/bootloaders.tar.gz
 "
+
+
+#$source="
+#  https://github.com/pieroproietti/penguins-eggs/archive/$_commit/penguins-eggs-$_commit.tar.gz
+#  https://github.com/pieroproietti/penguins-eggs/releases/download/v$pkgver/bootloaders.tar.gz
+#
 
 
 build() {
@@ -152,6 +159,6 @@ penguins-eggs-bash-completion() {
 }
 
 sha512sums="
-2c98135708f61e3962dc0b4a1ef05bb765c72fe368aebcfdda98fd8d64e942f775e98cac17caed1bc896ef9cd71a45d18debd87af870261a85204c299c9b1792  penguins-eggs-f955a5eab6524c83dbe382e6a4af8bb933320ebb.tar.gz
-c122362e27a50a309263722638ccadb61e4cb6a44330eae68106d89a3e3193ba6060d581d21696038c9126e6049c022549844c23c686ee9f4aacc72331f9c533  bootloaders.tar.gz
+8957e775de5785b8334ae7df2417c1b2452bf2852481abb8cdf87544e1811a56d04730b5c63a0622eb1d1a623f9bd7e1878c1c4f69ec2c366e4f53472f35a1d8  penguins-eggs-25.9.8.tar.gz
+650a37c707754d4e6e5470a654600ab0e0d7305920fd7d5ad1b9277efadf0e0eb5a7ff612504b5d5276400281f9110b9ebb917db0b6a0a906431e69f580b9f1f  bootloaders.tar.gz
 "
