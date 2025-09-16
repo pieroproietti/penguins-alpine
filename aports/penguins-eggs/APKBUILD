@@ -3,7 +3,7 @@
 _bootloadersver=25.9.8
 
 pkgname=penguins-eggs
-pkgver=25.9.13
+pkgver=25.9.14
 pkgrel=1
 pkgdesc="A console tool that allows you to remaster your system and redistribute it as live images on USB sticks or via PXE"
 url="https://penguins-eggs.net"
@@ -159,6 +159,6 @@ penguins-eggs-bash-completion() {
 }
 
 sha512sums="
-e6465ef4f1c067c5e38ce91b1f1b5e7bd1d487b15a3d832f3137d822e12bd304d6e310234d0eee94a3fb813e46aaf179c54e63af19098987331f59702df000c1  penguins-eggs-25.9.13.tar.gz
+d8021cc7aa453564ce1e46bbede4f9b59bb1e4d2be43eb744fd367fc839624f832a8970ca42dc694fd3ad5cfc2bbf28761f6fa7c2ea2f0deea86f5626c58a4a0  penguins-eggs-25.9.14.tar.gz
 650a37c707754d4e6e5470a654600ab0e0d7305920fd7d5ad1b9277efadf0e0eb5a7ff612504b5d5276400281f9110b9ebb917db0b6a0a906431e69f580b9f1f  bootloaders.tar.gz
 "
