@@ -33,6 +33,7 @@ depends="
   musl-locales
   nodejs
   parted
+  polkit
   rsync
   shadow
   squashfs-tools
