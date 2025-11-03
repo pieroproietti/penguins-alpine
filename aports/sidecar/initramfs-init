@@ -828,7 +828,7 @@ fi
 #	alpinelivelabel 
 #	cow_spacesize
 #
-# find line: 
+# find 
 # # check if root=... was set
 #  if [ -n "$KOPT_root" ]; then
 #   ...
@@ -904,6 +904,7 @@ if [ -z "$KOPT_root" ]; then
 		eend 1 "Sidecar boot failed. Falling back to default method."
 	fi
 fi
+
 # next line will be:
 # resume_from_disk
 # sidecar end <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -1063,6 +1064,7 @@ if [ -f $sysroot/etc/fstab ]; then
 elif [ -f "$ROOT"/etc/fstab ]; then
 	remount_fstab_entry "$ROOT"/etc/fstab
 fi
+
 
 # hack so we get openrc
 pkgs="$pkgs alpine-base"
